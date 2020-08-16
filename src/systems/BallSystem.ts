@@ -1,6 +1,5 @@
 import { System } from "ecsy";
 import {
-  CanvasContextComponent,
   PositionComponent,
   CollidableComponent,
   MovementComponent,
@@ -10,7 +9,6 @@ import {
 
 export class BallSystem extends System {
   static queries = {
-    canvas: { components: [CanvasContextComponent] },
     balls: { components: [BallComponent] },
   };
 
@@ -32,7 +30,7 @@ export class BallSystem extends System {
 
       if (collision.wallCollision.y !== 0) {
         movement.direction.y = -movement.direction.y;
-        movement.velocity += 0.3;
+        movement.velocity += 0.1;
         position.value.y =
           position.value.y + (radius.value / 2) * movement.direction.y;
       }
@@ -40,11 +38,12 @@ export class BallSystem extends System {
       if (collision.wallCollision.x !== 0) {
         movement.direction.x = -movement.direction.x;
         position.value.x =
-          position.value.x + (radius.value / 2) * movement.direction.x;
+          position.value.x + radius.value * movement.direction.x;
       }
 
-      if (collision.collidingIds.length) {
+      if (collision.collidingEntities.length) {
         movement.direction.x = -movement.direction.x;
+        position.value.x + radius.value * movement.direction.x;
       }
     });
   }

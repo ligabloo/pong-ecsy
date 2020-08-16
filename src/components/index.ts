@@ -1,6 +1,7 @@
 export * from "./BallComponent";
 export * from "./CanvasContextComponent";
 export * from "./CollidableComponent";
+export * from "./GameStateComponent";
 export * from "./MovementComponent";
 export * from "./PaddleComponent";
 export * from "./PositionComponent";

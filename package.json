@@ -8,6 +8,7 @@
     "ecsy": "^0.4.0"
   },
   "devDependencies": {
-    "parcel": "next"
+    "parcel": "^1.12.4",
+    "typescript": "^3.9.7"
   }
 }

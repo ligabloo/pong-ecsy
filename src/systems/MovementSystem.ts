@@ -11,7 +11,7 @@ export class MovementSystem extends System {
     movable: { components: [MovementComponent, PositionComponent] },
   };
 
-  execute(delta: number): void {
+  execute(): void {
     const movables = this.queries.movable.results;
 
     movables.forEach((entity) => {
@@ -30,7 +30,6 @@ export class MovementSystem extends System {
         movement.direction,
         movement.velocity
       );
-      appliedMovement = VectorMath.multiply(appliedMovement, delta);
 
       position.value = VectorMath.add(position.value, appliedMovement);
     });

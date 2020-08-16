@@ -13,8 +13,8 @@ export function createBall(
   world: World,
   position: Vector2,
   direction: Vector2,
-  velocity: number,
-  radius: number
+  radius: number,
+  velocity: number
 ) {
   return world
     .createEntity()

@@ -31,12 +31,12 @@ export class CollisionSystem extends System {
       );
 
       // Clear collisions from past frame
-      aCollision.collidingIds = [];
+      aCollision.collidingEntities = [];
 
       // Check collision against stage Y
       if (aPosition.value.y > canvas.height - aCollision.box.y) {
         aCollision.wallCollision.y = 1;
-      } else if (aPosition.value.y < 0 + aCollision.box.y) {
+      } else if (aPosition.value.y < 0) {
         aCollision.wallCollision.y = -1;
       } else {
         aCollision.wallCollision.y = 0;
@@ -68,7 +68,7 @@ export class CollisionSystem extends System {
               { dimensions: bCollision.box, position: bPosition.value }
             )
           ) {
-            aCollision.collidingIds.push(b.id);
+            aCollision.collidingEntities.push(b);
           }
         });
     });

@@ -3,6 +3,7 @@ import {
   BallComponent,
   CanvasContextComponent,
   CollidableComponent,
+  GameStateComponent,
   MovementComponent,
   PaddleComponent,
   PositionComponent,
@@ -10,13 +11,14 @@ import {
   RenderComponent,
   SizeComponent,
 } from "./components";
-import {
-  MovementSystem,
-  RendererSystem,
-  CollisionSystem,
-  BallSystem,
-} from "./systems";
 import { PongScene } from "./scenes";
+import {
+  BallSystem,
+  CollisionSystem,
+  MovementSystem,
+  PaddleSystem,
+  RendererSystem,
+} from "./systems";
 
 // Instantiate ECSY world
 export const world = new World();
@@ -26,6 +28,7 @@ world
   .registerComponent(BallComponent)
   .registerComponent(CanvasContextComponent)
   .registerComponent(CollidableComponent)
+  .registerComponent(GameStateComponent)
   .registerComponent(MovementComponent)
   .registerComponent(PositionComponent)
   .registerComponent(PaddleComponent)
@@ -35,9 +38,16 @@ world
   .registerSystem(CollisionSystem)
   .registerSystem(RendererSystem)
   .registerSystem(BallSystem)
+  .registerSystem(PaddleSystem)
   .registerSystem(MovementSystem);
 
-// Get reference to the HTML canvas element
+// Initialize our GameState singleton
+const gameStateEntity = world.createEntity().addComponent(GameStateComponent);
+const gameState = gameStateEntity.getMutableComponent<GameStateComponent>(
+  GameStateComponent
+);
+
+// Get a reference to our canvas HTML element
 const canvas = document.getElementById("game") as HTMLCanvasElement;
 
 // Create CanvasContext singleton entity and provide it the canvas context and dimensions
@@ -47,19 +57,33 @@ world.createEntity().addComponent(CanvasContextComponent, {
   height: canvas.height,
 });
 
+// Load our game scene into the world
 const pongScene = new PongScene();
 pongScene.load(world, canvas);
 
-// Implement game loop
-let lastTime = performance.now();
+// Monitor for keyboard events
 
+window.addEventListener(
+  "keydown",
+  (e) => {
+    gameState.pressedKeyCodes = [...gameState.pressedKeyCodes, e.keyCode];
+  },
+  false
+);
+
+window.addEventListener(
+  "keyup",
+  (e) => {
+    gameState.pressedKeyCodes = gameState.pressedKeyCodes.filter(
+      (keyCode) => keyCode !== e.keyCode
+    );
+  },
+  false
+);
+
+// Implement and execute game loop
 function update() {
-  const time = performance.now();
-  const delta = (time - lastTime) / 60;
-
-  world.execute(delta, time);
-
-  lastTime = time;
+  world.execute();
   requestAnimationFrame(update);
 }
 

@@ -48,25 +48,27 @@ export class RendererSystem extends System {
   }
 
   renderRect(ctx: CanvasRenderingContext2D, entity: Entity): void {
-    const { value: position } = entity.getComponent<PositionComponent>(
-      PositionComponent
-    );
-    const { value: size } = entity.getComponent<SizeComponent>(SizeComponent);
+    const position = entity.getComponent<PositionComponent>(PositionComponent);
+    const size = entity.getComponent<SizeComponent>(SizeComponent);
+
     ctx.beginPath();
-    ctx.rect(position.x, position.y, size.x, size.y);
+    ctx.rect(position.value.x, position.value.y, size.value.x, size.value.y);
     ctx.fillStyle = "white";
     ctx.fill();
   }
 
   renderCircle(ctx: CanvasRenderingContext2D, entity: Entity): void {
-    const { value: position } = entity.getComponent<PositionComponent>(
-      PositionComponent
-    );
-    const { value: radius } = entity.getComponent<RadiusComponent>(
-      RadiusComponent
-    );
+    const position = entity.getComponent<PositionComponent>(PositionComponent);
+    const radius = entity.getComponent<RadiusComponent>(RadiusComponent);
     ctx.beginPath();
-    ctx.arc(position.x, position.y, radius, 0, 2 * Math.PI, false);
+    ctx.arc(
+      position.value.x,
+      position.value.y,
+      radius.value,
+      0,
+      2 * Math.PI,
+      false
+    );
     ctx.fillStyle = "white";
     ctx.fill();
   }

@@ -1,19 +1,19 @@
-import { Component, Types } from "ecsy";
+import { Component, Types, Entity } from "ecsy";
 import { Vector2, Vector2Type } from "../types/Vector2Type";
 
 interface IPropTypes {
   box: Vector2;
   wallCollision: Vector2;
-  collidingIds: number[];
+  collidingEntities: Entity[];
 }
 
 export class CollidableComponent extends Component<IPropTypes> {
   static schema = {
     box: { type: Vector2Type },
     wallCollision: { type: Vector2Type },
-    collidingIds: { type: Types.Array },
+    collidingEntities: { type: Types.Array },
   };
   box: Vector2;
   wallCollision: Vector2;
-  collidingIds: number[];
+  collidingEntities: Entity[];
 }

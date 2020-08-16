@@ -16,20 +16,23 @@ export class PongScene implements IScene {
       new Vector2(canvas.width / 2, canvas.height / 2),
       Random.getRandomDirection(),
       10,
-      10
+      2
     );
 
     // Instantiate paddles
     const paddleSize = new Vector2(20, 120);
+    const paddleSpeed = 5;
+    const paddleOffset = 10;
 
     // Player 1
     this.paddle1 = createPaddle(
       world,
       0,
-      new Vector2(10, canvas.height / 2 - paddleSize.y / 2),
+      new Vector2(paddleOffset, canvas.height / 2 - paddleSize.y / 2),
       new Vector2(),
-      10,
-      paddleSize
+      paddleSpeed,
+      paddleSize,
+      paddleOffset
     );
 
     // Player 2
@@ -37,12 +40,13 @@ export class PongScene implements IScene {
       world,
       1,
       new Vector2(
-        canvas.width - paddleSize.x - 10,
+        canvas.width - paddleSize.x - paddleOffset,
         canvas.height / 2 - paddleSize.y / 2
       ),
       new Vector2(),
-      10,
-      paddleSize
+      paddleSpeed,
+      paddleSize,
+      paddleOffset
     );
   }
   unload(): void {
