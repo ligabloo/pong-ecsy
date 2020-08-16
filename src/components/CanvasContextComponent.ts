@@ -1,12 +1,12 @@
 import { Component, Types } from "ecsy";
 
-interface ICanvasContext {
+interface IPropTypes {
   ctx: CanvasRenderingContext2D;
   width: number;
   height: number;
 }
 
-export class CanvasContext extends Component<ICanvasContext> {
+export class CanvasContextComponent extends Component<IPropTypes> {
   static schema = {
     ctx: { type: Types.Ref },
     width: { type: Types.Number },

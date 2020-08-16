@@ -4,7 +4,7 @@ interface IPropTypes {
   playerIndex: number;
 }
 
-export class Paddle extends Component<IPropTypes> {
+export class PaddleComponent extends Component<IPropTypes> {
   static schema = {
     playerIndex: { type: Types.Number },
   };

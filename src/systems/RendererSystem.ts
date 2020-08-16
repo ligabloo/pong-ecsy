@@ -1,10 +1,16 @@
 import { System, Entity } from "ecsy";
-import { Render, Size, CanvasContext, Radius, Position } from "../components";
+import {
+  RenderComponent,
+  SizeComponent,
+  CanvasContextComponent,
+  RadiusComponent,
+  PositionComponent,
+} from "../components";
 
 export class RendererSystem extends System {
   static queries = {
-    canvas: { components: [CanvasContext] },
-    renderables: { components: [Render] },
+    canvas: { components: [CanvasContextComponent] },
+    renderables: { components: [RenderComponent] },
   };
 
   execute(): void {
@@ -13,13 +19,15 @@ export class RendererSystem extends System {
       ctx,
       width: canvasWidth,
       height: canvasHeight,
-    } = canvas.getComponent<CanvasContext>(CanvasContext);
+    } = canvas.getComponent<CanvasContextComponent>(CanvasContextComponent);
 
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
     this.queries.renderables.results.forEach((entity) => {
-      const { primitive, isEnabled } = entity.getComponent<Render>(Render);
+      const { primitive, isEnabled } = entity.getComponent<RenderComponent>(
+        RenderComponent
+      );
 
       // If not enabled, skip render
       if (!isEnabled) return;
@@ -40,8 +48,10 @@ export class RendererSystem extends System {
   }
 
   renderRect(ctx: CanvasRenderingContext2D, entity: Entity): void {
-    const { value: position } = entity.getComponent<Position>(Position);
-    const { value: size } = entity.getComponent<Size>(Size);
+    const { value: position } = entity.getComponent<PositionComponent>(
+      PositionComponent
+    );
+    const { value: size } = entity.getComponent<SizeComponent>(SizeComponent);
     ctx.beginPath();
     ctx.rect(position.x, position.y, size.x, size.y);
     ctx.fillStyle = "white";
@@ -49,8 +59,12 @@ export class RendererSystem extends System {
   }
 
   renderCircle(ctx: CanvasRenderingContext2D, entity: Entity): void {
-    const { value: position } = entity.getComponent<Position>(Position);
-    const { value: radius } = entity.getComponent<Radius>(Radius);
+    const { value: position } = entity.getComponent<PositionComponent>(
+      PositionComponent
+    );
+    const { value: radius } = entity.getComponent<RadiusComponent>(
+      RadiusComponent
+    );
     ctx.beginPath();
     ctx.arc(position.x, position.y, radius, 0, 2 * Math.PI, false);
     ctx.fillStyle = "white";

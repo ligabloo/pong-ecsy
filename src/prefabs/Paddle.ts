@@ -1,11 +1,11 @@
 import { World } from "ecsy";
 import {
-  Collidable,
-  Movement,
-  Paddle,
-  Position,
-  Render,
-  Size,
+  CollidableComponent,
+  MovementComponent,
+  PaddleComponent,
+  PositionComponent,
+  RenderComponent,
+  SizeComponent,
 } from "../components";
 import { Vector2 } from "../types/Vector2Type";
 
@@ -19,17 +19,17 @@ export function createPaddle(
 ) {
   return world
     .createEntity()
-    .addComponent(Paddle, { playerIndex })
-    .addComponent(Render, {
+    .addComponent(PaddleComponent, { playerIndex })
+    .addComponent(RenderComponent, {
       primitive: "rect",
     })
-    .addComponent(Movement, {
+    .addComponent(MovementComponent, {
       direction,
       velocity,
     })
-    .addComponent(Position, {
+    .addComponent(PositionComponent, {
       value: position,
     })
-    .addComponent(Size, { value: size })
-    .addComponent(Collidable);
+    .addComponent(SizeComponent, { value: size })
+    .addComponent(CollidableComponent, { box: size });
 }

@@ -1,5 +1,5 @@
 import { IScene } from "./IScene";
-import { createBall, createPaddle } from "../entities";
+import { createBall, createPaddle } from "../prefabs";
 import { Vector2 } from "../types/Vector2Type";
 import { Random } from "../utils";
 import { Entity, World } from "ecsy";
@@ -20,7 +20,7 @@ export class PongScene implements IScene {
     );
 
     // Instantiate paddles
-    const paddleSize = new Vector2(20, 100);
+    const paddleSize = new Vector2(20, 120);
 
     // Player 1
     this.paddle1 = createPaddle(

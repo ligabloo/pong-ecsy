@@ -10,9 +10,6 @@ export class Random {
   }
 
   static getRandomDirection() {
-    return new Vector2(
-      Random.getRandomArbitrary(-1, 1),
-      Random.getRandomArbitrary(-1, 1)
-    );
+    return new Vector2(Random.getMinusOrPlusOne(), Random.getMinusOrPlusOne());
   }
 }

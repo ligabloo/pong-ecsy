@@ -1,7 +1,17 @@
 import { Vector2 } from "../types/Vector2Type";
 
+interface IBoxStruct {
+  position: Vector2;
+  dimensions: Vector2;
+}
+
 export class BoxCollision {
-  static isCollising(boxA: Vector2, boxB: Vector2): boolean {
-    return false;
+  static isColliding(boxA: IBoxStruct, boxB: IBoxStruct): boolean {
+    return (
+      boxA.position.x < boxB.position.x + boxB.dimensions.x &&
+      boxA.position.x + boxA.dimensions.x > boxB.position.x &&
+      boxA.position.y < boxB.position.y + boxB.dimensions.y &&
+      boxA.position.y + boxA.dimensions.y > boxB.position.y
+    );
   }
 }

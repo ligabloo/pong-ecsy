@@ -7,10 +7,10 @@ interface IPropTypes {
   isEnabled: boolean;
 }
 
-export class Movement extends Component<IPropTypes> {
+export class MovementComponent extends Component<IPropTypes> {
   static schema = {
-    direction: { type: Vector2Type, default: new Vector2() },
-    velocity: { type: Types.Number, default: 0 },
+    direction: { type: Vector2Type },
+    velocity: { type: Types.Number },
     isEnabled: { type: Types.Boolean, default: true },
   };
 

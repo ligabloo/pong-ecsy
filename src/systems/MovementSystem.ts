@@ -1,10 +1,14 @@
 import { System } from "ecsy";
-import { CanvasContext, Movement, Position } from "../components";
+import {
+  CanvasContextComponent,
+  MovementComponent,
+  PositionComponent,
+} from "../components";
 import { VectorMath } from "../utils";
 
 export class MovementSystem extends System {
   static queries = {
-    movable: { components: [Movement, Position] },
+    movable: { components: [MovementComponent, PositionComponent] },
   };
 
   execute(delta: number): void {
@@ -12,8 +16,12 @@ export class MovementSystem extends System {
 
     movables.forEach((entity) => {
       // Get entity movement and position components
-      const movement = entity.getMutableComponent<Movement>(Movement);
-      const position = entity.getMutableComponent<Position>(Position);
+      const movement = entity.getMutableComponent<MovementComponent>(
+        MovementComponent
+      );
+      const position = entity.getMutableComponent<PositionComponent>(
+        PositionComponent
+      );
 
       // If entity movement is not enabled, skip this
       if (!movement.isEnabled) return;

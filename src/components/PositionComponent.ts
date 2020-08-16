@@ -5,9 +5,9 @@ interface IPropTypes {
   value: Vector2;
 }
 
-export class Position extends Component<IPropTypes> {
+export class PositionComponent extends Component<IPropTypes> {
   static schema = {
-    value: { type: Vector2Type, default: new Vector2() },
+    value: { type: Vector2Type },
   };
 
   value: Vector2;

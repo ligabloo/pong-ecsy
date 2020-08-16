@@ -4,7 +4,7 @@ interface IPropTypes {
   value: number;
 }
 
-export class Radius extends Component<IPropTypes> {
+export class RadiusComponent extends Component<IPropTypes> {
   static schema = {
     value: { type: Types.Number },
   };

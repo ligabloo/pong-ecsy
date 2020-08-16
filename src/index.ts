@@ -1,14 +1,14 @@
 import { World } from "ecsy";
 import {
-  Ball,
-  CanvasContext,
-  Collidable,
-  Movement,
-  Paddle,
-  Position,
-  Radius,
-  Render,
-  Size,
+  BallComponent,
+  CanvasContextComponent,
+  CollidableComponent,
+  MovementComponent,
+  PaddleComponent,
+  PositionComponent,
+  RadiusComponent,
+  RenderComponent,
+  SizeComponent,
 } from "./components";
 import {
   MovementSystem,
@@ -23,15 +23,15 @@ export const world = new World();
 
 // Register ECSY components
 world
-  .registerComponent(Ball)
-  .registerComponent(CanvasContext)
-  .registerComponent(Collidable)
-  .registerComponent(Movement)
-  .registerComponent(Position)
-  .registerComponent(Paddle)
-  .registerComponent(Radius)
-  .registerComponent(Render)
-  .registerComponent(Size)
+  .registerComponent(BallComponent)
+  .registerComponent(CanvasContextComponent)
+  .registerComponent(CollidableComponent)
+  .registerComponent(MovementComponent)
+  .registerComponent(PositionComponent)
+  .registerComponent(PaddleComponent)
+  .registerComponent(RadiusComponent)
+  .registerComponent(RenderComponent)
+  .registerComponent(SizeComponent)
   .registerSystem(CollisionSystem)
   .registerSystem(RendererSystem)
   .registerSystem(BallSystem)
@@ -41,7 +41,7 @@ world
 const canvas = document.getElementById("game") as HTMLCanvasElement;
 
 // Create CanvasContext singleton entity and provide it the canvas context and dimensions
-world.createEntity().addComponent(CanvasContext, {
+world.createEntity().addComponent(CanvasContextComponent, {
   ctx: canvas.getContext("2d"),
   width: canvas.width,
   height: canvas.height,
