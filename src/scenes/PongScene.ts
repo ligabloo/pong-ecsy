@@ -1,19 +1,19 @@
-import { Scene } from "./Scene";
+import { IScene } from "./IScene";
 import { createBall, createPaddle } from "../entities";
 import { Vector2 } from "../types/Vector2Type";
 import { Random } from "../utils";
-import { Entity } from "ecsy";
+import { Entity, World } from "ecsy";
 
-export class PongScene extends Scene {
+export class PongScene implements IScene {
   ball: Entity;
   paddle1: Entity;
   paddle2: Entity;
 
-  load(): void {
+  load(world: World, canvas: HTMLCanvasElement): void {
     // Instantiate a circle entity on the middle of the canvas
     this.ball = createBall(
-      this.world,
-      new Vector2(this.canvas.width / 2, this.canvas.height / 2),
+      world,
+      new Vector2(canvas.width / 2, canvas.height / 2),
       Random.getRandomDirection(),
       10,
       10
@@ -24,9 +24,9 @@ export class PongScene extends Scene {
 
     // Player 1
     this.paddle1 = createPaddle(
-      this.world,
+      world,
       0,
-      new Vector2(10, this.canvas.height / 2 - paddleSize.y / 2),
+      new Vector2(10, canvas.height / 2 - paddleSize.y / 2),
       new Vector2(),
       10,
       paddleSize
@@ -34,11 +34,11 @@ export class PongScene extends Scene {
 
     // Player 2
     this.paddle2 = createPaddle(
-      this.world,
+      world,
       1,
       new Vector2(
-        this.canvas.width - paddleSize.x - 10,
-        this.canvas.height / 2 - paddleSize.y / 2
+        canvas.width - paddleSize.x - 10,
+        canvas.height / 2 - paddleSize.y / 2
       ),
       new Vector2(),
       10,

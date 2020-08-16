@@ -1,7 +1,7 @@
 {
   "name": "pong-ecsy",
   "scripts": {
-    "start": "parcel serve ./src/index.html",
+    "start": "parcel serve ./src/index.html --dist-dir serve",
     "build": "parcel build ./src/index.html"
   },
   "dependencies": {

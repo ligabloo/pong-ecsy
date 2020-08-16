@@ -16,7 +16,7 @@ import {
   CollisionSystem,
   BallSystem,
 } from "./systems";
-import { BallsScene, PongScene } from "./scenes";
+import { PongScene } from "./scenes";
 
 // Instantiate ECSY world
 export const world = new World();
@@ -40,17 +40,15 @@ world
 // Get reference to the HTML canvas element
 const canvas = document.getElementById("game") as HTMLCanvasElement;
 
-// Create CanvasContext entity and provide it the canvas context and dimensions
+// Create CanvasContext singleton entity and provide it the canvas context and dimensions
 world.createEntity().addComponent(CanvasContext, {
   ctx: canvas.getContext("2d"),
   width: canvas.width,
   height: canvas.height,
 });
 
-const pongScene = new PongScene(world, canvas);
-const ballsScene = new BallsScene(world, canvas);
-
-ballsScene.load();
+const pongScene = new PongScene();
+pongScene.load(world, canvas);
 
 // Implement game loop
 let lastTime = performance.now();
