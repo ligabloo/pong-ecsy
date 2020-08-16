@@ -1,0 +1,13 @@
+{
+    "name": "pong-ecsy",
+    "scripts": {
+        "start": "parcel serve ./src/index.html",
+        "build": "parcel build ./src/index.html"
+    },
+    "dependencies": {
+        "ecsy": "^0.4.0"
+    },
+    "devDependencies": {
+        "parcel": "next"
+    }
+}
