@@ -1,17 +1,22 @@
-import { World, Entity } from "ecsy";
+import { World } from "ecsy";
 import {
-  CanvasContext,
-  Movement,
-  Radius,
-  Renderable,
-  Size,
   Ball,
-  Position,
+  CanvasContext,
+  Collidable,
+  Movement,
   Paddle,
+  Position,
+  Radius,
+  Render,
+  Size,
 } from "./components";
-import { BallSystem, RendererSystem } from "./systems";
-import { Vector2 } from "./types/Vector2Type";
-import { getRandomDirection } from "./utils";
+import {
+  MovementSystem,
+  RendererSystem,
+  CollisionSystem,
+  BallSystem,
+} from "./systems";
+import { BallsScene, PongScene } from "./scenes";
 
 // Instantiate ECSY world
 export const world = new World();
@@ -20,14 +25,17 @@ export const world = new World();
 world
   .registerComponent(Ball)
   .registerComponent(CanvasContext)
+  .registerComponent(Collidable)
   .registerComponent(Movement)
   .registerComponent(Position)
   .registerComponent(Paddle)
   .registerComponent(Radius)
-  .registerComponent(Renderable)
+  .registerComponent(Render)
   .registerComponent(Size)
+  .registerSystem(CollisionSystem)
   .registerSystem(RendererSystem)
-  .registerSystem(BallSystem);
+  .registerSystem(BallSystem)
+  .registerSystem(MovementSystem);
 
 // Get reference to the HTML canvas element
 const canvas = document.getElementById("game") as HTMLCanvasElement;
@@ -39,47 +47,10 @@ world.createEntity().addComponent(CanvasContext, {
   height: canvas.height,
 });
 
-// Instantiate a circle entity on the middle of the canvas
-world
-  .createEntity("ball")
-  .addComponent(Ball)
-  .addComponent(Movement, {
-    direction: getRandomDirection(),
-    velocity: 10,
-  })
-  .addComponent(Renderable, {
-    primitive: "circle",
-  })
-  .addComponent(Position, {
-    value: new Vector2(canvas.width / 2, canvas.height / 2),
-  })
-  .addComponent(Radius, { value: 10 });
+const pongScene = new PongScene(world, canvas);
+const ballsScene = new BallsScene(world, canvas);
 
-// Instantiate paddles
-const paddleSize = new Vector2(20, 100);
-
-world
-  .createEntity("paddle1")
-  .addComponent(Renderable, {
-    primitive: "rect",
-  })
-  .addComponent(Position, {
-    value: new Vector2(10, canvas.height / 2 - paddleSize.y / 2),
-  })
-  .addComponent(Size, { value: paddleSize });
-
-world
-  .createEntity("paddle2")
-  .addComponent(Renderable, {
-    primitive: "rect",
-  })
-  .addComponent(Position, {
-    value: new Vector2(
-      canvas.width - paddleSize.x - 10,
-      canvas.height / 2 - paddleSize.y / 2
-    ),
-  })
-  .addComponent(Size, { value: paddleSize });
+ballsScene.load();
 
 // Implement game loop
 let lastTime = performance.now();

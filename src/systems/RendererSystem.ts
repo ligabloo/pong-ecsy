@@ -1,19 +1,13 @@
 import { System, Entity } from "ecsy";
-import {
-  Renderable,
-  Size,
-  CanvasContext,
-  Radius,
-  Position,
-} from "../components";
+import { Render, Size, CanvasContext, Radius, Position } from "../components";
 
 export class RendererSystem extends System {
   static queries = {
     canvas: { components: [CanvasContext] },
-    renderables: { components: [Renderable] },
+    renderables: { components: [Render] },
   };
 
-  execute(delta: number, time: number): void {
+  execute(): void {
     const canvas = this.queries.canvas.results[0];
     const {
       ctx,
@@ -25,9 +19,7 @@ export class RendererSystem extends System {
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
     this.queries.renderables.results.forEach((entity) => {
-      const { primitive, isEnabled } = entity.getComponent<Renderable>(
-        Renderable
-      );
+      const { primitive, isEnabled } = entity.getComponent<Render>(Render);
 
       // If not enabled, skip render
       if (!isEnabled) return;

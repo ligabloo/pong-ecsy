@@ -24,27 +24,6 @@ export class Vector2 {
   clone() {
     return new Vector2().set(this.x, this.y);
   }
-
-  add(vector: Vector2): Vector2 {
-    this.x += vector.x;
-    this.y += vector.y;
-
-    return this;
-  }
-
-  multiply(vector: Vector2): Vector2 {
-    this.x *= vector.x;
-    this.y *= vector.y;
-
-    return this;
-  }
-
-  multiplyByNumber(number: number): Vector2 {
-    this.x *= number;
-    this.y *= number;
-
-    return this;
-  }
 }
 
 export const Vector2Type = createType({

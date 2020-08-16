@@ -5,7 +5,7 @@ interface IPropTypes {
   isEnabled: boolean;
 }
 
-export class Renderable extends Component<IPropTypes> {
+export class Render extends Component<IPropTypes> {
   static schema = {
     primitive: { type: Types.String, default: "box" },
     isEnabled: { type: Types.Boolean, default: true },
