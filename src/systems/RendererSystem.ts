@@ -76,8 +76,8 @@ export class RendererSystem extends System {
     const radius = entity.getComponent<RadiusComponent>(RadiusComponent);
     ctx.beginPath();
     ctx.arc(
-      position.value.x,
-      position.value.y,
+      position.value.x + radius.value,
+      position.value.y + radius.value,
       radius.value,
       0,
       2 * Math.PI,

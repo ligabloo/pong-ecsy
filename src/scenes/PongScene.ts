@@ -10,10 +10,14 @@ export class PongScene implements IScene {
   paddle2: Entity;
 
   load(world: World, canvas: HTMLCanvasElement): void {
+    const ballRadius = 10;
     // Instantiate a circle entity on the middle of the canvas
     this.ball = createBall(
       world,
-      new Vector2(canvas.width / 2, canvas.height / 2),
+      new Vector2(
+        canvas.width / 2 - ballRadius,
+        canvas.height / 2 - ballRadius
+      ),
       Random.getRandomDirection(),
       10,
       3

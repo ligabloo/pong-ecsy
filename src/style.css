@@ -16,10 +16,6 @@ body {
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
-canvas {
-  border: 1px solid white;
-}
-
 header {
   display: flex;
   justify-content: space-around;
@@ -38,10 +34,15 @@ header {
 .player .player__score {
   display: block;
   font-weight: 700;
-  font-size: 2em;
+  font-size: 2rem;
 }
 
 .player .player__keys {
-  font-size: 1.25em;
+  font-size: 1.25rem;
   color: gray;
+}
+
+canvas {
+  margin-top: 1rem;
+  border: 1px solid gray;
 }

@@ -1,7 +1,7 @@
 import { System } from "ecsy";
 import {
   PositionComponent,
-  CollidableComponent,
+  CollisionBoxComponent,
   MovementComponent,
   BallComponent,
   RadiusComponent,
@@ -28,8 +28,8 @@ export class BallSystem extends System {
     balls.forEach((entity) => {
       // Get entity components
       const { wallCollision, collidingEntities } = entity.getComponent<
-        CollidableComponent
-      >(CollidableComponent);
+        CollisionBoxComponent
+      >(CollisionBoxComponent);
       const radius = entity.getComponent<RadiusComponent>(RadiusComponent);
       const position = entity.getMutableComponent<PositionComponent>(
         PositionComponent

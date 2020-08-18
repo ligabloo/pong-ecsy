@@ -2,7 +2,7 @@ import { World } from "ecsy";
 import {
   BallComponent,
   CanvasContextComponent,
-  CollidableComponent,
+  CollisionBoxComponent,
   GameStateComponent,
   MovementComponent,
   PaddleComponent,
@@ -29,7 +29,7 @@ export const world = new World();
 world
   .registerComponent(BallComponent)
   .registerComponent(CanvasContextComponent)
-  .registerComponent(CollidableComponent)
+  .registerComponent(CollisionBoxComponent)
   .registerComponent(GameStateComponent)
   .registerComponent(MovementComponent)
   .registerComponent(PositionComponent)

@@ -1,6 +1,6 @@
 import { World } from "ecsy";
 import {
-  CollidableComponent,
+  CollisionBoxComponent,
   MovementComponent,
   PaddleComponent,
   PositionComponent,
@@ -31,5 +31,5 @@ export function createPaddle(
       value: position,
     })
     .addComponent(SizeComponent, { value: size })
-    .addComponent(CollidableComponent, { box: size });
+    .addComponent(CollisionBoxComponent, { box: size });
 }

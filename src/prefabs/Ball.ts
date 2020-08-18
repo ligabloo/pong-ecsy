@@ -1,6 +1,6 @@
 import {
   BallComponent,
-  CollidableComponent,
+  CollisionBoxComponent,
   MovementComponent,
   RenderComponent,
   PositionComponent,
@@ -33,8 +33,7 @@ export function createBall(
       value: position,
     })
     .addComponent(RadiusComponent, { value: radius })
-    .addComponent(CollidableComponent, {
+    .addComponent(CollisionBoxComponent, {
       box: new Vector2(radius * 2, radius * 2),
-      originOffset: new Vector2(-radius, -radius),
     });
 }

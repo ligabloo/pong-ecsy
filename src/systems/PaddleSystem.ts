@@ -1,6 +1,6 @@
 import { System } from "ecsy";
 import {
-  CollidableComponent,
+  CollisionBoxComponent,
   MovementComponent,
   PaddleComponent,
   GameStateComponent,
@@ -38,8 +38,8 @@ export class PaddleSystem extends System {
       const movement = entity.getMutableComponent<MovementComponent>(
         MovementComponent
       );
-      const collision = entity.getComponent<CollidableComponent>(
-        CollidableComponent
+      const collision = entity.getComponent<CollisionBoxComponent>(
+        CollisionBoxComponent
       );
 
       // Get control scheme according to player index
