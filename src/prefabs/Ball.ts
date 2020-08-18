@@ -33,5 +33,8 @@ export function createBall(
       value: position,
     })
     .addComponent(RadiusComponent, { value: radius })
-    .addComponent(CollidableComponent, { box: new Vector2(10, 10) });
+    .addComponent(CollidableComponent, {
+      box: new Vector2(radius * 2, radius * 2),
+      originOffset: new Vector2(-radius, -radius),
+    });
 }

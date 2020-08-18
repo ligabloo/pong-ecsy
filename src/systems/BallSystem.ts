@@ -63,7 +63,7 @@ export class BallSystem extends System {
       if (collidingEntities.length) {
         movement.direction.x = -movement.direction.x;
         position.value.x =
-          position.value.x + radius.value * movement.direction.x;
+          position.value.x + (radius.value / 2) * movement.direction.x;
       }
     });
   }

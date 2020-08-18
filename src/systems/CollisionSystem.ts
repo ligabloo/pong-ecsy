@@ -4,7 +4,7 @@ import {
   PositionComponent,
   CollidableComponent,
 } from "../components";
-import { BoxCollision } from "../utils";
+import { BoxCollision, VectorMath } from "../utils";
 
 export class CollisionSystem extends System {
   static queries = {
@@ -21,39 +21,44 @@ export class CollisionSystem extends System {
       CanvasContextComponent
     );
 
-    collidables.forEach((a) => {
+    collidables.forEach((entity) => {
       // Get entity components
-      const aCollision = a.getMutableComponent<CollidableComponent>(
+      const collider = entity.getMutableComponent<CollidableComponent>(
         CollidableComponent
       );
-      const aPosition = a.getMutableComponent<PositionComponent>(
+      const position = entity.getMutableComponent<PositionComponent>(
         PositionComponent
       );
 
+      const colliderPosition = VectorMath.add(
+        position.value,
+        collider.originOffset
+      );
+
       // Clear collisions from past frame
-      aCollision.collidingEntities = [];
+      collider.collidingEntities = [];
 
       // Check collision against stage Y
-      if (aPosition.value.y > canvas.height - aCollision.box.y) {
-        aCollision.wallCollision.y = 1;
-      } else if (aPosition.value.y < 0) {
-        aCollision.wallCollision.y = -1;
+      if (colliderPosition.y > canvas.height - collider.box.y) {
+        collider.wallCollision.y = 1;
+      } else if (colliderPosition.y < 0) {
+        collider.wallCollision.y = -1;
       } else {
-        aCollision.wallCollision.y = 0;
+        collider.wallCollision.y = 0;
       }
 
       // Check collision against stage X
-      if (aPosition.value.x > canvas.width - aCollision.box.x) {
-        aCollision.wallCollision.x = 1;
-      } else if (aPosition.value.x < 0 + aCollision.box.x) {
-        aCollision.wallCollision.x = -1;
+      if (colliderPosition.x > canvas.width - collider.box.x) {
+        collider.wallCollision.x = 1;
+      } else if (colliderPosition.x < 0 + collider.box.x) {
+        collider.wallCollision.x = -1;
       } else {
-        aCollision.wallCollision.x = 0;
+        collider.wallCollision.x = 0;
       }
 
       // Check collision between entities
       collidables
-        .filter((b) => b.id != a.id)
+        .filter((b) => b.id != entity.id)
         .forEach((b) => {
           const bCollision = b.getComponent<CollidableComponent>(
             CollidableComponent
@@ -62,13 +67,18 @@ export class CollisionSystem extends System {
             PositionComponent
           );
 
+          const bColliderPosition = VectorMath.add(
+            bPosition.value,
+            bCollision.originOffset
+          );
+
           if (
             BoxCollision.isColliding(
-              { dimensions: aCollision.box, position: aPosition.value },
-              { dimensions: bCollision.box, position: bPosition.value }
+              { dimensions: collider.box, position: colliderPosition },
+              { dimensions: bCollision.box, position: bColliderPosition }
             )
           ) {
-            aCollision.collidingEntities.push(b);
+            collider.collidingEntities.push(b);
           }
         });
     });
