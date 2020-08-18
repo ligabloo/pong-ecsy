@@ -45,7 +45,7 @@ export class CollisionSystem extends System {
       // Check collision against stage X
       if (position.value.x > canvas.width - collider.box.x) {
         collider.wallCollision.x = 1;
-      } else if (position.value.x < 0 + collider.box.x) {
+      } else if (position.value.x < 0) {
         collider.wallCollision.x = -1;
       } else {
         collider.wallCollision.x = 0;
