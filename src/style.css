@@ -46,3 +46,14 @@ canvas {
   margin-top: 1rem;
   border: 1px solid gray;
 }
+
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1em 0;
+}
+
+footer a {
+  color: gray;
+}
