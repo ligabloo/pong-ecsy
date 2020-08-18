@@ -427,7 +427,7 @@ var _systems = require("./systems");
 const world = new _ecsy.World(); // Register ECSY components
 
 exports.world = world;
-world.registerComponent(_components.BallComponent).registerComponent(_components.CanvasContextComponent).registerComponent(_components.CollidableComponent).registerComponent(_components.GameStateComponent).registerComponent(_components.MovementComponent).registerComponent(_components.PositionComponent).registerComponent(_components.PaddleComponent).registerComponent(_components.RadiusComponent).registerComponent(_components.RenderComponent).registerComponent(_components.SizeComponent).registerSystem(_systems.CollisionSystem).registerSystem(_systems.RendererSystem).registerSystem(_systems.BallSystem).registerSystem(_systems.PaddleSystem).registerSystem(_systems.MovementSystem); // Initialize our GameState singleton
+world.registerComponent(_components.BallComponent).registerComponent(_components.CanvasContextComponent).registerComponent(_components.CollisionBoxComponent).registerComponent(_components.GameStateComponent).registerComponent(_components.MovementComponent).registerComponent(_components.PositionComponent).registerComponent(_components.PaddleComponent).registerComponent(_components.RadiusComponent).registerComponent(_components.RenderComponent).registerComponent(_components.SizeComponent).registerSystem(_systems.GameSystem).registerSystem(_systems.CollisionSystem).registerSystem(_systems.RendererSystem).registerSystem(_systems.BallSystem).registerSystem(_systems.PaddleSystem).registerSystem(_systems.MovementSystem); // Initialize our GameState singleton
 
 const gameStateEntity = world.createEntity().addComponent(_components.GameStateComponent);
 const gameState = gameStateEntity.getMutableComponent(_components.GameStateComponent); // Get a reference to our canvas HTML element
@@ -456,7 +456,7 @@ function update() {
 }
 
 update();
-},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0","./components":"bc610deadc54a08eda6642f8b91e1a0d","./systems":"ae881ceed1c2eec2aa441b45d7233cc9","./scenes":"8794890f3d3ff0e3e55daa8f63590080"}],"322d3b240f66735bb9b56aa9d97788a0":[function(require,module,exports) {
+},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0","./components":"bc610deadc54a08eda6642f8b91e1a0d","./scenes":"8794890f3d3ff0e3e55daa8f63590080","./systems":"ae881ceed1c2eec2aa441b45d7233cc9"}],"322d3b240f66735bb9b56aa9d97788a0":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2624,14 +2624,14 @@ Object.keys(_CanvasContextComponent).forEach(function (key) {
   });
 });
 
-var _CollidableComponent = require("./CollidableComponent");
+var _CollisionBoxComponent = require("./CollisionBoxComponent");
 
-Object.keys(_CollidableComponent).forEach(function (key) {
+Object.keys(_CollisionBoxComponent).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function () {
-      return _CollidableComponent[key];
+      return _CollisionBoxComponent[key];
     }
   });
 });
@@ -2719,7 +2719,7 @@ Object.keys(_SizeComponent).forEach(function (key) {
     }
   });
 });
-},{"./BallComponent":"95879f8704174ee2f8eea604dd30974f","./CanvasContextComponent":"2f7388d86e1dfe4ee125444d1faa5dcc","./CollidableComponent":"6a45e82af6ab40234808d674478ca95d","./GameStateComponent":"1f4e95d780e115914deb38e52f567b34","./MovementComponent":"080707a66a1d8eab770b0a4810258606","./PaddleComponent":"4967f4a07e5725883e957311f1b94757","./PositionComponent":"40338dd4a002c5131d4fe60be491f12f","./RadiusComponent":"1e993f5a6b09bbe1e4d0b514f22dadeb","./RenderComponent":"69d476ab34b7466e669fd112a763f133","./SizeComponent":"4df6879c3d836e9d4cd1b2e3f26a18e5"}],"95879f8704174ee2f8eea604dd30974f":[function(require,module,exports) {
+},{"./BallComponent":"95879f8704174ee2f8eea604dd30974f","./CanvasContextComponent":"2f7388d86e1dfe4ee125444d1faa5dcc","./CollisionBoxComponent":"fc01209c3af5f4f74427b0fad3b5acb9","./GameStateComponent":"1f4e95d780e115914deb38e52f567b34","./MovementComponent":"080707a66a1d8eab770b0a4810258606","./PaddleComponent":"4967f4a07e5725883e957311f1b94757","./PositionComponent":"40338dd4a002c5131d4fe60be491f12f","./RadiusComponent":"1e993f5a6b09bbe1e4d0b514f22dadeb","./RenderComponent":"69d476ab34b7466e669fd112a763f133","./SizeComponent":"4df6879c3d836e9d4cd1b2e3f26a18e5"}],"95879f8704174ee2f8eea604dd30974f":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2729,9 +2729,124 @@ exports.BallComponent = void 0;
 
 var _ecsy = require("ecsy");
 
-class BallComponent extends _ecsy.TagComponent {}
+var _types = require("../types");
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+class BallComponent extends _ecsy.Component {}
 
 exports.BallComponent = BallComponent;
+
+_defineProperty(BallComponent, "schema", {
+  initialPosition: {
+    type: _types.Vector2Type
+  },
+  initialVelocity: {
+    type: _ecsy.Types.Number
+  }
+});
+},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0","../types":"5e9a35ee2f801f921f7d42a44841d8f1"}],"5e9a35ee2f801f921f7d42a44841d8f1":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _PlayerType = require("./PlayerType");
+
+Object.keys(_PlayerType).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _PlayerType[key];
+    }
+  });
+});
+
+var _Vector2Type = require("./Vector2Type");
+
+Object.keys(_Vector2Type).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _Vector2Type[key];
+    }
+  });
+});
+},{"./PlayerType":"e81574eaff8cf34345a1c4958d1c918f","./Vector2Type":"0d144aba2d0394558ce3f8bf75078649"}],"e81574eaff8cf34345a1c4958d1c918f":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.PlayerType = exports.Player = void 0;
+
+var _ecsy = require("ecsy");
+
+class Player {
+  constructor(element = null, score = 0) {
+    this.element = element;
+    this.score = score;
+  }
+
+  copy(source) {
+    this.score = source.score;
+    this.element = source.element;
+    return this;
+  }
+
+  clone() {
+    return new Player(this.element, this.score);
+  }
+
+}
+
+exports.Player = Player;
+const PlayerType = (0, _ecsy.createType)({
+  name: "Player",
+  default: new Player(),
+  copy: _ecsy.copyCopyable,
+  clone: _ecsy.cloneClonable
+});
+exports.PlayerType = PlayerType;
+},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0"}],"0d144aba2d0394558ce3f8bf75078649":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Vector2Type = exports.Vector2 = void 0;
+
+var _ecsy = require("ecsy");
+
+class Vector2 {
+  constructor(x = 0, y = 0) {
+    this.x = x;
+    this.y = y;
+  }
+
+  copy(source) {
+    this.x = source.x;
+    this.y = source.y;
+    return this;
+  }
+
+  clone() {
+    return new Vector2(this.x, this.y);
+  }
+
+}
+
+exports.Vector2 = Vector2;
+const Vector2Type = (0, _ecsy.createType)({
+  name: "Vector2",
+  default: new Vector2(),
+  copy: _ecsy.copyCopyable,
+  clone: _ecsy.cloneClonable
+});
+exports.Vector2Type = Vector2Type;
 },{"ecsy":"322d3b240f66735bb9b56aa9d97788a0"}],"2f7388d86e1dfe4ee125444d1faa5dcc":[function(require,module,exports) {
 "use strict";
 
@@ -2759,78 +2874,36 @@ _defineProperty(CanvasContextComponent, "schema", {
     type: _ecsy.Types.Number
   }
 });
-},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0"}],"6a45e82af6ab40234808d674478ca95d":[function(require,module,exports) {
+},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0"}],"fc01209c3af5f4f74427b0fad3b5acb9":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.CollidableComponent = void 0;
+exports.CollisionBoxComponent = void 0;
 
 var _ecsy = require("ecsy");
 
-var _Vector2Type = require("../types/Vector2Type");
+var _types = require("../types");
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-class CollidableComponent extends _ecsy.Component {}
+class CollisionBoxComponent extends _ecsy.Component {}
 
-exports.CollidableComponent = CollidableComponent;
+exports.CollisionBoxComponent = CollisionBoxComponent;
 
-_defineProperty(CollidableComponent, "schema", {
+_defineProperty(CollisionBoxComponent, "schema", {
   box: {
-    type: _Vector2Type.Vector2Type
+    type: _types.Vector2Type
   },
   wallCollision: {
-    type: _Vector2Type.Vector2Type
+    type: _types.Vector2Type
   },
   collidingEntities: {
     type: _ecsy.Types.Array
   }
 });
-},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0","../types/Vector2Type":"0d144aba2d0394558ce3f8bf75078649"}],"0d144aba2d0394558ce3f8bf75078649":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Vector2Type = exports.Vector2 = void 0;
-
-var _ecsy = require("ecsy");
-
-class Vector2 {
-  constructor(x = 0, y = 0) {
-    this.x = x;
-    this.y = y;
-  }
-
-  set(x, y) {
-    this.x = x;
-    this.y = y;
-    return this;
-  }
-
-  copy(source) {
-    this.x = source.x;
-    this.y = source.y;
-    return this;
-  }
-
-  clone() {
-    return new Vector2().set(this.x, this.y);
-  }
-
-}
-
-exports.Vector2 = Vector2;
-const Vector2Type = (0, _ecsy.createType)({
-  name: "Vector2",
-  default: new Vector2(),
-  copy: _ecsy.copyCopyable,
-  clone: _ecsy.cloneClonable
-});
-exports.Vector2Type = Vector2Type;
-},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0"}],"1f4e95d780e115914deb38e52f567b34":[function(require,module,exports) {
+},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0","../types":"5e9a35ee2f801f921f7d42a44841d8f1"}],"1f4e95d780e115914deb38e52f567b34":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2840,6 +2913,10 @@ exports.GameStateComponent = void 0;
 
 var _ecsy = require("ecsy");
 
+var _enums = require("../types/enums");
+
+var _types = require("../types");
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 class GameStateComponent extends _ecsy.Component {}
@@ -2847,17 +2924,45 @@ class GameStateComponent extends _ecsy.Component {}
 exports.GameStateComponent = GameStateComponent;
 
 _defineProperty(GameStateComponent, "schema", {
-  player1Points: {
-    type: _ecsy.Types.Number
+  state: {
+    type: _ecsy.Types.Number,
+    default: _enums.GameState.Waiting
   },
-  player2Points: {
-    type: _ecsy.Types.Number
+  player1: {
+    type: _types.PlayerType
+  },
+  player2: {
+    type: _types.PlayerType
   },
   pressedKeyCodes: {
     type: _ecsy.Types.Array
   }
 });
-},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0"}],"080707a66a1d8eab770b0a4810258606":[function(require,module,exports) {
+},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0","../types/enums":"d7fd32fb2b1feed90d31d3249297e0e3","../types":"5e9a35ee2f801f921f7d42a44841d8f1"}],"d7fd32fb2b1feed90d31d3249297e0e3":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.PlayerSchemeKeys = exports.GameState = void 0;
+let GameState;
+exports.GameState = GameState;
+
+(function (GameState) {
+  GameState[GameState["Waiting"] = 0] = "Waiting";
+  GameState[GameState["Running"] = 1] = "Running";
+})(GameState || (exports.GameState = GameState = {}));
+
+let PlayerSchemeKeys;
+exports.PlayerSchemeKeys = PlayerSchemeKeys;
+
+(function (PlayerSchemeKeys) {
+  PlayerSchemeKeys[PlayerSchemeKeys["ArrowUp"] = 38] = "ArrowUp";
+  PlayerSchemeKeys[PlayerSchemeKeys["ArrowDown"] = 40] = "ArrowDown";
+  PlayerSchemeKeys[PlayerSchemeKeys["W"] = 87] = "W";
+  PlayerSchemeKeys[PlayerSchemeKeys["S"] = 83] = "S";
+})(PlayerSchemeKeys || (exports.PlayerSchemeKeys = PlayerSchemeKeys = {}));
+},{}],"080707a66a1d8eab770b0a4810258606":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2867,7 +2972,7 @@ exports.MovementComponent = void 0;
 
 var _ecsy = require("ecsy");
 
-var _Vector2Type = require("../types/Vector2Type");
+var _types = require("../types");
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -2877,7 +2982,7 @@ exports.MovementComponent = MovementComponent;
 
 _defineProperty(MovementComponent, "schema", {
   direction: {
-    type: _Vector2Type.Vector2Type
+    type: _types.Vector2Type
   },
   velocity: {
     type: _ecsy.Types.Number
@@ -2887,7 +2992,7 @@ _defineProperty(MovementComponent, "schema", {
     default: true
   }
 });
-},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0","../types/Vector2Type":"0d144aba2d0394558ce3f8bf75078649"}],"4967f4a07e5725883e957311f1b94757":[function(require,module,exports) {
+},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0","../types":"5e9a35ee2f801f921f7d42a44841d8f1"}],"4967f4a07e5725883e957311f1b94757":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2988,7 +3093,7 @@ exports.SizeComponent = void 0;
 
 var _ecsy = require("ecsy");
 
-var _Vector2Type = require("../types/Vector2Type");
+var _types = require("../types");
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -2998,191 +3103,151 @@ exports.SizeComponent = SizeComponent;
 
 _defineProperty(SizeComponent, "schema", {
   value: {
-    type: _Vector2Type.Vector2Type
+    type: _types.Vector2Type
   }
 });
-},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0","../types/Vector2Type":"0d144aba2d0394558ce3f8bf75078649"}],"ae881ceed1c2eec2aa441b45d7233cc9":[function(require,module,exports) {
+},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0","../types":"5e9a35ee2f801f921f7d42a44841d8f1"}],"8794890f3d3ff0e3e55daa8f63590080":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _BallSystem = require("./BallSystem");
+var _PongScene = require("./PongScene");
 
-Object.keys(_BallSystem).forEach(function (key) {
+Object.keys(_PongScene).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function () {
-      return _BallSystem[key];
+      return _PongScene[key];
     }
   });
 });
-
-var _CollisionSystem = require("./CollisionSystem");
-
-Object.keys(_CollisionSystem).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function () {
-      return _CollisionSystem[key];
-    }
-  });
-});
-
-var _MovementSystem = require("./MovementSystem");
-
-Object.keys(_MovementSystem).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function () {
-      return _MovementSystem[key];
-    }
-  });
-});
-
-var _PaddleSystem = require("./PaddleSystem");
-
-Object.keys(_PaddleSystem).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function () {
-      return _PaddleSystem[key];
-    }
-  });
-});
-
-var _RendererSystem = require("./RendererSystem");
-
-Object.keys(_RendererSystem).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function () {
-      return _RendererSystem[key];
-    }
-  });
-});
-},{"./RendererSystem":"7492a0598b81b7202e3243a1e7828ebc","./MovementSystem":"11bf7ad375d9029eaad09408c3ef6622","./CollisionSystem":"603000d7ef661abab81f8828746c55e1","./BallSystem":"1f029996ae3a148757e7f47a9d8abcf8","./PaddleSystem":"0d7ade6f35e3cd314bb9f79897a6ae58"}],"7492a0598b81b7202e3243a1e7828ebc":[function(require,module,exports) {
+},{"./PongScene":"301d1b66b4d9cd046fc421f9a52cd502"}],"301d1b66b4d9cd046fc421f9a52cd502":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.RendererSystem = void 0;
+exports.PongScene = void 0;
 
-var _ecsy = require("ecsy");
+var _prefabs = require("../prefabs");
 
-var _components = require("../components");
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-class RendererSystem extends _ecsy.System {
-  execute() {
-    const canvas = this.queries.canvas.results[0];
-    const {
-      ctx,
-      width: canvasWidth,
-      height: canvasHeight
-    } = canvas.getComponent(_components.CanvasContextComponent);
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-    this.queries.renderables.results.forEach(entity => {
-      const {
-        primitive,
-        isEnabled
-      } = entity.getComponent(_components.RenderComponent); // If not enabled, skip render
-
-      if (!isEnabled) return;
-      const renderFunctions = {
-        rect: this.renderRect,
-        circle: this.renderCircle
-      };
-
-      if (renderFunctions[primitive]) {
-        renderFunctions[primitive](ctx, entity);
-      } else {
-        console.log(`${primitive} primitive does not implement a render function`);
-      }
-    });
-  }
-
-  renderRect(ctx, entity) {
-    const position = entity.getComponent(_components.PositionComponent);
-    const size = entity.getComponent(_components.SizeComponent);
-    ctx.beginPath();
-    ctx.rect(position.value.x, position.value.y, size.value.x, size.value.y);
-    ctx.fillStyle = "white";
-    ctx.fill();
-  }
-
-  renderCircle(ctx, entity) {
-    const position = entity.getComponent(_components.PositionComponent);
-    const radius = entity.getComponent(_components.RadiusComponent);
-    ctx.beginPath();
-    ctx.arc(position.value.x, position.value.y, radius.value, 0, 2 * Math.PI, false);
-    ctx.fillStyle = "white";
-    ctx.fill();
-  }
-
-}
-
-exports.RendererSystem = RendererSystem;
-
-_defineProperty(RendererSystem, "queries", {
-  canvas: {
-    components: [_components.CanvasContextComponent]
-  },
-  renderables: {
-    components: [_components.RenderComponent]
-  }
-});
-},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0","../components":"bc610deadc54a08eda6642f8b91e1a0d"}],"11bf7ad375d9029eaad09408c3ef6622":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.MovementSystem = void 0;
-
-var _ecsy = require("ecsy");
-
-var _components = require("../components");
+var _types = require("../types");
 
 var _utils = require("../utils");
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+class PongScene {
+  load(world, canvas) {
+    const ballRadius = 10; // Instantiate a circle entity on the middle of the canvas
 
-class MovementSystem extends _ecsy.System {
-  execute() {
-    const movables = this.queries.movable.results;
-    movables.forEach(entity => {
-      // Get entity movement and position components
-      const movement = entity.getMutableComponent(_components.MovementComponent);
-      const position = entity.getMutableComponent(_components.PositionComponent); // If entity movement is not enabled, skip this
+    this.ball = (0, _prefabs.createBall)(world, new _types.Vector2(canvas.width / 2 - ballRadius, canvas.height / 2 - ballRadius), _utils.Random.getRandomDirection(), 10, 3); // Instantiate paddles
 
-      if (!movement.isEnabled) return;
+    const paddleSize = new _types.Vector2(20, 120);
+    const paddleSpeed = 6;
+    const paddleOffset = 10; // Player 1
 
-      let appliedMovement = _utils.VectorMath.multiply(movement.direction, movement.velocity);
+    this.paddle1 = (0, _prefabs.createPaddle)(world, 0, new _types.Vector2(paddleOffset, canvas.height / 2 - paddleSize.y / 2), new _types.Vector2(), paddleSpeed, paddleSize); // Player 2
 
-      position.value = _utils.VectorMath.add(position.value, appliedMovement);
-    });
+    this.paddle2 = (0, _prefabs.createPaddle)(world, 1, new _types.Vector2(canvas.width - paddleSize.x - paddleOffset, canvas.height / 2 - paddleSize.y / 2), new _types.Vector2(), paddleSpeed, paddleSize);
+  }
+
+  unload() {
+    this.ball.remove();
+    this.paddle1.remove();
+    this.paddle2.remove();
   }
 
 }
 
-exports.MovementSystem = MovementSystem;
+exports.PongScene = PongScene;
+},{"../prefabs":"8faaa58b1cd4c3ad86314bd9694a5aeb","../types":"5e9a35ee2f801f921f7d42a44841d8f1","../utils":"5f24944aa7d2b85fc56215858c2e7056"}],"8faaa58b1cd4c3ad86314bd9694a5aeb":[function(require,module,exports) {
+"use strict";
 
-_defineProperty(MovementSystem, "queries", {
-  movable: {
-    components: [_components.MovementComponent, _components.PositionComponent]
-  }
+Object.defineProperty(exports, "__esModule", {
+  value: true
 });
-},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0","../components":"bc610deadc54a08eda6642f8b91e1a0d","../utils":"5f24944aa7d2b85fc56215858c2e7056"}],"5f24944aa7d2b85fc56215858c2e7056":[function(require,module,exports) {
+
+var _Ball = require("./Ball");
+
+Object.keys(_Ball).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _Ball[key];
+    }
+  });
+});
+
+var _Paddle = require("./Paddle");
+
+Object.keys(_Paddle).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _Paddle[key];
+    }
+  });
+});
+},{"./Ball":"6f0abe1e0437d89e72e0bb3a1662d39b","./Paddle":"ce3d652b0ecb12a1c3093751d3d327a7"}],"6f0abe1e0437d89e72e0bb3a1662d39b":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.createBall = createBall;
+
+var _components = require("../components");
+
+var _types = require("../types");
+
+function createBall(world, position, direction, radius, velocity) {
+  return world.createEntity().addComponent(_components.BallComponent, {
+    initialPosition: position,
+    initialVelocity: velocity
+  }).addComponent(_components.RenderComponent, {
+    primitive: "circle"
+  }).addComponent(_components.MovementComponent, {
+    direction,
+    velocity
+  }).addComponent(_components.PositionComponent, {
+    value: position
+  }).addComponent(_components.RadiusComponent, {
+    value: radius
+  }).addComponent(_components.CollisionBoxComponent, {
+    box: new _types.Vector2(radius * 2, radius * 2)
+  });
+}
+},{"../components":"bc610deadc54a08eda6642f8b91e1a0d","../types":"5e9a35ee2f801f921f7d42a44841d8f1"}],"ce3d652b0ecb12a1c3093751d3d327a7":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.createPaddle = createPaddle;
+
+var _components = require("../components");
+
+function createPaddle(world, playerIndex, position, direction, velocity, size) {
+  return world.createEntity().addComponent(_components.PaddleComponent, {
+    playerIndex
+  }).addComponent(_components.RenderComponent, {
+    primitive: "rect"
+  }).addComponent(_components.MovementComponent, {
+    direction,
+    velocity
+  }).addComponent(_components.PositionComponent, {
+    value: position
+  }).addComponent(_components.SizeComponent, {
+    value: size
+  }).addComponent(_components.CollisionBoxComponent, {
+    box: size
+  });
+}
+},{"../components":"bc610deadc54a08eda6642f8b91e1a0d"}],"5f24944aa7d2b85fc56215858c2e7056":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3224,59 +3289,7 @@ Object.keys(_VectorMath).forEach(function (key) {
     }
   });
 });
-},{"./Random":"3b6ca754cb6df94668213983e316db17","./VectorMath":"8c1a49eef4c6f1a4a0600d269a9bf9e1","./BoxCollision":"d66a1d625a67c864bb0c581076e41c42"}],"3b6ca754cb6df94668213983e316db17":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Random = void 0;
-
-var _Vector2Type = require("../types/Vector2Type");
-
-class Random {
-  static getRandomArbitrary(min, max) {
-    return Math.random() * (max - min) + min;
-  }
-
-  static getMinusOrPlusOne() {
-    return Random.getRandomArbitrary(0, 1) < 0.5 ? -1 : 1;
-  }
-
-  static getRandomDirection() {
-    return new _Vector2Type.Vector2(Random.getMinusOrPlusOne(), Random.getMinusOrPlusOne());
-  }
-
-}
-
-exports.Random = Random;
-},{"../types/Vector2Type":"0d144aba2d0394558ce3f8bf75078649"}],"8c1a49eef4c6f1a4a0600d269a9bf9e1":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.VectorMath = void 0;
-
-var _Vector2Type = require("../types/Vector2Type");
-
-class VectorMath {
-  static add(a, b) {
-    return new _Vector2Type.Vector2(a.x + b.x, a.y + b.y);
-  }
-
-  static multiply(a, b) {
-    if (b instanceof _Vector2Type.Vector2) {
-      return new _Vector2Type.Vector2(a.x * b.x, a.y * b.y);
-    } else {
-      return new _Vector2Type.Vector2(a.x * b, a.y * b);
-    }
-  }
-
-}
-
-exports.VectorMath = VectorMath;
-},{"../types/Vector2Type":"0d144aba2d0394558ce3f8bf75078649"}],"d66a1d625a67c864bb0c581076e41c42":[function(require,module,exports) {
+},{"./BoxCollision":"d66a1d625a67c864bb0c581076e41c42","./Random":"3b6ca754cb6df94668213983e316db17","./VectorMath":"8c1a49eef4c6f1a4a0600d269a9bf9e1"}],"d66a1d625a67c864bb0c581076e41c42":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3292,7 +3305,209 @@ class BoxCollision {
 }
 
 exports.BoxCollision = BoxCollision;
-},{}],"603000d7ef661abab81f8828746c55e1":[function(require,module,exports) {
+},{}],"3b6ca754cb6df94668213983e316db17":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Random = void 0;
+
+var _types = require("../types");
+
+class Random {
+  static getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  static getMinusOrPlusOne() {
+    return Random.getRandomArbitrary(0, 1) < 0.5 ? -1 : 1;
+  }
+
+  static getRandomDirection() {
+    return new _types.Vector2(Random.getMinusOrPlusOne(), Random.getMinusOrPlusOne());
+  }
+
+}
+
+exports.Random = Random;
+},{"../types":"5e9a35ee2f801f921f7d42a44841d8f1"}],"8c1a49eef4c6f1a4a0600d269a9bf9e1":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.VectorMath = void 0;
+
+var _types = require("../types");
+
+class VectorMath {
+  static add(a, b) {
+    return new _types.Vector2(a.x + b.x, a.y + b.y);
+  }
+
+  static multiply(a, b) {
+    if (b instanceof _types.Vector2) {
+      return new _types.Vector2(a.x * b.x, a.y * b.y);
+    } else {
+      return new _types.Vector2(a.x * b, a.y * b);
+    }
+  }
+
+}
+
+exports.VectorMath = VectorMath;
+},{"../types":"5e9a35ee2f801f921f7d42a44841d8f1"}],"ae881ceed1c2eec2aa441b45d7233cc9":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _BallSystem = require("./BallSystem");
+
+Object.keys(_BallSystem).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _BallSystem[key];
+    }
+  });
+});
+
+var _CollisionSystem = require("./CollisionSystem");
+
+Object.keys(_CollisionSystem).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _CollisionSystem[key];
+    }
+  });
+});
+
+var _GameSystem = require("./GameSystem");
+
+Object.keys(_GameSystem).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _GameSystem[key];
+    }
+  });
+});
+
+var _MovementSystem = require("./MovementSystem");
+
+Object.keys(_MovementSystem).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _MovementSystem[key];
+    }
+  });
+});
+
+var _PaddleSystem = require("./PaddleSystem");
+
+Object.keys(_PaddleSystem).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _PaddleSystem[key];
+    }
+  });
+});
+
+var _RendererSystem = require("./RendererSystem");
+
+Object.keys(_RendererSystem).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _RendererSystem[key];
+    }
+  });
+});
+},{"./BallSystem":"1f029996ae3a148757e7f47a9d8abcf8","./CollisionSystem":"603000d7ef661abab81f8828746c55e1","./GameSystem":"2966c200f0b5fefaa71129fcf5b46589","./MovementSystem":"11bf7ad375d9029eaad09408c3ef6622","./PaddleSystem":"0d7ade6f35e3cd314bb9f79897a6ae58","./RendererSystem":"7492a0598b81b7202e3243a1e7828ebc"}],"1f029996ae3a148757e7f47a9d8abcf8":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.BallSystem = void 0;
+
+var _ecsy = require("ecsy");
+
+var _components = require("../components");
+
+var _utils = require("../utils");
+
+var _types = require("../types");
+
+var _enums = require("../types/enums");
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+class BallSystem extends _ecsy.System {
+  execute() {
+    const gameStateEntity = this.queries.gameState.results[0];
+    const balls = this.queries.balls.results;
+    const gameState = gameStateEntity.getMutableComponent(_components.GameStateComponent);
+    balls.forEach(entity => {
+      // Get entity components
+      const {
+        wallCollision,
+        collidingEntities
+      } = entity.getComponent(_components.CollisionBoxComponent);
+      const radius = entity.getComponent(_components.RadiusComponent);
+      const position = entity.getMutableComponent(_components.PositionComponent);
+      const movement = entity.getMutableComponent(_components.MovementComponent);
+
+      if (wallCollision.y !== 0) {
+        movement.direction.y = -movement.direction.y;
+        movement.velocity += 0.2;
+        position.value.y = position.value.y + radius.value / 2 * movement.direction.y;
+      }
+
+      if (wallCollision.x !== 0) {
+        const {
+          initialPosition,
+          initialVelocity
+        } = entity.getComponent(_components.BallComponent);
+        position.value = initialPosition;
+        movement.velocity = initialVelocity;
+        movement.direction = new _types.Vector2(movement.direction.x, _utils.Random.getMinusOrPlusOne());
+        gameState[wallCollision.x == 1 ? "player1" : "player2"].score++;
+        gameState.state = _enums.GameState.Waiting;
+      }
+
+      if (collidingEntities.length) {
+        movement.direction.x = -movement.direction.x;
+        position.value.x = position.value.x + radius.value / 2 * movement.direction.x;
+      }
+    });
+  }
+
+}
+
+exports.BallSystem = BallSystem;
+
+_defineProperty(BallSystem, "queries", {
+  gameState: {
+    components: [_components.GameStateComponent]
+  },
+  balls: {
+    components: [_components.BallComponent]
+  }
+});
+},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0","../components":"bc610deadc54a08eda6642f8b91e1a0d","../utils":"5f24944aa7d2b85fc56215858c2e7056","../types":"5e9a35ee2f801f921f7d42a44841d8f1","../types/enums":"d7fd32fb2b1feed90d31d3249297e0e3"}],"603000d7ef661abab81f8828746c55e1":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3314,43 +3529,43 @@ class CollisionSystem extends _ecsy.System {
     const collidables = this.queries.collidables.results; // Get canvas dimensions
 
     const canvas = canvasEntity.getComponent(_components.CanvasContextComponent);
-    collidables.forEach(a => {
+    collidables.forEach(entity => {
       // Get entity components
-      const aCollision = a.getMutableComponent(_components.CollidableComponent);
-      const aPosition = a.getMutableComponent(_components.PositionComponent); // Clear collisions from past frame
+      const collider = entity.getMutableComponent(_components.CollisionBoxComponent);
+      const position = entity.getMutableComponent(_components.PositionComponent); // Clear collisions from past frame
 
-      aCollision.collidingEntities = []; // Check collision against stage Y
+      collider.collidingEntities = []; // Check collision against stage Y
 
-      if (aPosition.value.y > canvas.height - aCollision.box.y) {
-        aCollision.wallCollision.y = 1;
-      } else if (aPosition.value.y < 0) {
-        aCollision.wallCollision.y = -1;
+      if (position.value.y > canvas.height - collider.box.y) {
+        collider.wallCollision.y = 1;
+      } else if (position.value.y < 0) {
+        collider.wallCollision.y = -1;
       } else {
-        aCollision.wallCollision.y = 0;
+        collider.wallCollision.y = 0;
       } // Check collision against stage X
 
 
-      if (aPosition.value.x > canvas.width - aCollision.box.x) {
-        aCollision.wallCollision.x = 1;
-      } else if (aPosition.value.x < 0 + aCollision.box.x) {
-        aCollision.wallCollision.x = -1;
+      if (position.value.x > canvas.width - collider.box.x) {
+        collider.wallCollision.x = 1;
+      } else if (position.value.x < 0) {
+        collider.wallCollision.x = -1;
       } else {
-        aCollision.wallCollision.x = 0;
+        collider.wallCollision.x = 0;
       } // Check collision between entities
 
 
-      collidables.filter(b => b.id != a.id).forEach(b => {
-        const bCollision = b.getComponent(_components.CollidableComponent);
+      collidables.filter(b => b.id != entity.id).forEach(b => {
+        const bCollision = b.getComponent(_components.CollisionBoxComponent);
         const bPosition = b.getComponent(_components.PositionComponent);
 
         if (_utils.BoxCollision.isColliding({
-          dimensions: aCollision.box,
-          position: aPosition.value
+          dimensions: collider.box,
+          position: position.value
         }, {
           dimensions: bCollision.box,
           position: bPosition.value
         })) {
-          aCollision.collidingEntities.push(b);
+          collider.collidingEntities.push(b);
         }
       });
     });
@@ -3365,61 +3580,130 @@ _defineProperty(CollisionSystem, "queries", {
     components: [_components.CanvasContextComponent]
   },
   collidables: {
-    components: [_components.CollidableComponent]
+    components: [_components.CollisionBoxComponent]
   }
 });
-},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0","../components":"bc610deadc54a08eda6642f8b91e1a0d","../utils":"5f24944aa7d2b85fc56215858c2e7056"}],"1f029996ae3a148757e7f47a9d8abcf8":[function(require,module,exports) {
+},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0","../components":"bc610deadc54a08eda6642f8b91e1a0d","../utils":"5f24944aa7d2b85fc56215858c2e7056"}],"2966c200f0b5fefaa71129fcf5b46589":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.BallSystem = void 0;
+exports.GameSystem = void 0;
 
 var _ecsy = require("ecsy");
 
 var _components = require("../components");
 
+var _enums = require("../types/enums");
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-class BallSystem extends _ecsy.System {
+class GameSystem extends _ecsy.System {
   execute() {
-    const balls = this.queries.balls.results;
-    balls.forEach(entity => {
-      // Get entity components
-      const collision = entity.getComponent(_components.CollidableComponent);
-      const radius = entity.getComponent(_components.RadiusComponent);
-      const position = entity.getMutableComponent(_components.PositionComponent);
+    const addedEntity = this.queries.gameState.added[0];
+
+    if (addedEntity) {
+      const {
+        player1,
+        player2
+      } = addedEntity.getMutableComponent(_components.GameStateComponent);
+      player1.element = document.querySelector('[data-player="1"]');
+      player2.element = document.querySelector('[data-player="2"]');
+      return;
+    }
+
+    const entity = this.queries.gameState.results[0];
+    const gameState = entity.getMutableComponent(_components.GameStateComponent);
+    const stateSystems = {
+      [_enums.GameState.Waiting]: this.waitingState,
+      [_enums.GameState.Running]: this.runningState,
+      [_enums.GameState.Paused]: this.pausedState
+    };
+    stateSystems[gameState.state](gameState);
+  }
+
+  waitingState(gameState) {
+    const {
+      player1,
+      player2
+    } = gameState;
+    player1.element.innerText = `${player1.score}`;
+    player2.element.innerText = `${player2.score}`;
+    const playerSchemeKeys = [_enums.PlayerSchemeKeys.ArrowUp, _enums.PlayerSchemeKeys.ArrowDown, _enums.PlayerSchemeKeys.W, _enums.PlayerSchemeKeys.S];
+
+    if (playerSchemeKeys.some(keyCode => gameState.pressedKeyCodes.includes(keyCode))) {
+      gameState.state = _enums.GameState.Running;
+    }
+  }
+
+  runningState(gameState) {}
+
+  pausedState(gameState) {}
+
+}
+
+exports.GameSystem = GameSystem;
+
+_defineProperty(GameSystem, "queries", {
+  gameState: {
+    components: [_components.GameStateComponent],
+    listen: {
+      added: true
+    }
+  }
+});
+},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0","../components":"bc610deadc54a08eda6642f8b91e1a0d","../types/enums":"d7fd32fb2b1feed90d31d3249297e0e3"}],"11bf7ad375d9029eaad09408c3ef6622":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.MovementSystem = void 0;
+
+var _ecsy = require("ecsy");
+
+var _components = require("../components");
+
+var _utils = require("../utils");
+
+var _enums = require("../types/enums");
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+class MovementSystem extends _ecsy.System {
+  execute() {
+    const gameStateEntity = this.queries.gameState.results[0];
+    const movables = this.queries.movable.results;
+    const gameState = gameStateEntity.getComponent(_components.GameStateComponent); // If gamestate is not Running, skip movement logic
+
+    if (gameState.state != _enums.GameState.Running) return;
+    movables.forEach(entity => {
+      // Get entity movement and position components
       const movement = entity.getMutableComponent(_components.MovementComponent);
+      const position = entity.getMutableComponent(_components.PositionComponent); // If entity movement is not enabled, skip this
 
-      if (collision.wallCollision.y !== 0) {
-        movement.direction.y = -movement.direction.y;
-        movement.velocity += 0.1;
-        position.value.y = position.value.y + radius.value / 2 * movement.direction.y;
-      }
+      if (!movement.isEnabled) return;
 
-      if (collision.wallCollision.x !== 0) {
-        movement.direction.x = -movement.direction.x;
-        position.value.x = position.value.x + radius.value * movement.direction.x;
-      }
+      let appliedMovement = _utils.VectorMath.multiply(movement.direction, movement.velocity);
 
-      if (collision.collidingEntities.length) {
-        movement.direction.x = -movement.direction.x;
-        position.value.x + radius.value * movement.direction.x;
-      }
+      position.value = _utils.VectorMath.add(position.value, appliedMovement);
     });
   }
 
 }
 
-exports.BallSystem = BallSystem;
+exports.MovementSystem = MovementSystem;
 
-_defineProperty(BallSystem, "queries", {
-  balls: {
-    components: [_components.BallComponent]
+_defineProperty(MovementSystem, "queries", {
+  gameState: {
+    components: [_components.GameStateComponent]
+  },
+  movable: {
+    components: [_components.MovementComponent, _components.PositionComponent]
   }
 });
-},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0","../components":"bc610deadc54a08eda6642f8b91e1a0d"}],"0d7ade6f35e3cd314bb9f79897a6ae58":[function(require,module,exports) {
+},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0","../components":"bc610deadc54a08eda6642f8b91e1a0d","../utils":"5f24944aa7d2b85fc56215858c2e7056","../types/enums":"d7fd32fb2b1feed90d31d3249297e0e3"}],"0d7ade6f35e3cd314bb9f79897a6ae58":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3431,6 +3715,8 @@ var _ecsy = require("ecsy");
 
 var _components = require("../components");
 
+var _enums = require("../types/enums");
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 class PaddleSystem extends _ecsy.System {
@@ -3439,12 +3725,12 @@ class PaddleSystem extends _ecsy.System {
 
     _defineProperty(this, "playersControlSchemes", {
       0: {
-        up: 87,
-        down: 83
+        up: _enums.PlayerSchemeKeys.W,
+        down: _enums.PlayerSchemeKeys.S
       },
       1: {
-        up: 38,
-        down: 40
+        up: _enums.PlayerSchemeKeys.ArrowUp,
+        down: _enums.PlayerSchemeKeys.ArrowDown
       }
     });
   }
@@ -3457,7 +3743,7 @@ class PaddleSystem extends _ecsy.System {
       // Get entity components
       const paddle = entity.getComponent(_components.PaddleComponent);
       const movement = entity.getMutableComponent(_components.MovementComponent);
-      const collision = entity.getComponent(_components.CollidableComponent); // Get control scheme according to player index
+      const collision = entity.getComponent(_components.CollisionBoxComponent); // Get control scheme according to player index
 
       const paddleControlScheme = this.playersControlSchemes[paddle.playerIndex]; // Reset movement to 0;
 
@@ -3480,143 +3766,91 @@ _defineProperty(PaddleSystem, "queries", {
     components: [_components.GameStateComponent]
   }
 });
-},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0","../components":"bc610deadc54a08eda6642f8b91e1a0d"}],"8794890f3d3ff0e3e55daa8f63590080":[function(require,module,exports) {
+},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0","../components":"bc610deadc54a08eda6642f8b91e1a0d","../types/enums":"d7fd32fb2b1feed90d31d3249297e0e3"}],"7492a0598b81b7202e3243a1e7828ebc":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.RendererSystem = void 0;
 
-var _PongScene = require("./PongScene");
-
-Object.keys(_PongScene).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function () {
-      return _PongScene[key];
-    }
-  });
-});
-},{"./PongScene":"301d1b66b4d9cd046fc421f9a52cd502"}],"301d1b66b4d9cd046fc421f9a52cd502":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.PongScene = void 0;
-
-var _prefabs = require("../prefabs");
-
-var _Vector2Type = require("../types/Vector2Type");
-
-var _utils = require("../utils");
-
-class PongScene {
-  load(world, canvas) {
-    // Instantiate a circle entity on the middle of the canvas
-    this.ball = (0, _prefabs.createBall)(world, new _Vector2Type.Vector2(canvas.width / 2, canvas.height / 2), _utils.Random.getRandomDirection(), 10, 2); // Instantiate paddles
-
-    const paddleSize = new _Vector2Type.Vector2(20, 120);
-    const paddleSpeed = 5;
-    const paddleOffset = 10; // Player 1
-
-    this.paddle1 = (0, _prefabs.createPaddle)(world, 0, new _Vector2Type.Vector2(paddleOffset, canvas.height / 2 - paddleSize.y / 2), new _Vector2Type.Vector2(), paddleSpeed, paddleSize, paddleOffset); // Player 2
-
-    this.paddle2 = (0, _prefabs.createPaddle)(world, 1, new _Vector2Type.Vector2(canvas.width - paddleSize.x - paddleOffset, canvas.height / 2 - paddleSize.y / 2), new _Vector2Type.Vector2(), paddleSpeed, paddleSize, paddleOffset);
-  }
-
-  unload() {
-    this.ball.remove();
-    this.paddle1.remove();
-    this.paddle2.remove();
-  }
-
-}
-
-exports.PongScene = PongScene;
-},{"../types/Vector2Type":"0d144aba2d0394558ce3f8bf75078649","../utils":"5f24944aa7d2b85fc56215858c2e7056","../prefabs":"8faaa58b1cd4c3ad86314bd9694a5aeb"}],"8faaa58b1cd4c3ad86314bd9694a5aeb":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _Ball = require("./Ball");
-
-Object.keys(_Ball).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function () {
-      return _Ball[key];
-    }
-  });
-});
-
-var _Paddle = require("./Paddle");
-
-Object.keys(_Paddle).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function () {
-      return _Paddle[key];
-    }
-  });
-});
-},{"./Ball":"6f0abe1e0437d89e72e0bb3a1662d39b","./Paddle":"ce3d652b0ecb12a1c3093751d3d327a7"}],"6f0abe1e0437d89e72e0bb3a1662d39b":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.createBall = createBall;
+var _ecsy = require("ecsy");
 
 var _components = require("../components");
 
-var _Vector2Type = require("../types/Vector2Type");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function createBall(world, position, direction, radius, velocity) {
-  return world.createEntity().addComponent(_components.BallComponent).addComponent(_components.RenderComponent, {
-    primitive: "circle"
-  }).addComponent(_components.MovementComponent, {
-    direction,
-    velocity
-  }).addComponent(_components.PositionComponent, {
-    value: position
-  }).addComponent(_components.RadiusComponent, {
-    value: radius
-  }).addComponent(_components.CollidableComponent, {
-    box: new _Vector2Type.Vector2(10, 10)
-  });
+class RendererSystem extends _ecsy.System {
+  execute() {
+    const canvas = this.queries.canvas.results[0];
+    const {
+      ctx,
+      width: canvasWidth,
+      height: canvasHeight
+    } = canvas.getComponent(_components.CanvasContextComponent);
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight); // Draw a line and a circle on the middle of the canvas,
+    // because I couldn't be bothered to make a system for that!
+
+    ctx.strokeStyle = "gray";
+    ctx.fillStyle = "gray";
+    ctx.beginPath();
+    ctx.moveTo(canvasWidth / 2, 0);
+    ctx.lineTo(canvasWidth / 2, canvasHeight);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(canvasWidth / 2, canvasHeight / 2, 10, 0, 2 * Math.PI, false);
+    ctx.fill();
+    this.queries.renderables.results.forEach(entity => {
+      const {
+        primitive,
+        isEnabled
+      } = entity.getComponent(_components.RenderComponent); // If not enabled, skip render
+
+      if (!isEnabled) return;
+      const renderFunctions = {
+        rect: this.renderRect,
+        circle: this.renderCircle
+      };
+
+      if (renderFunctions[primitive]) {
+        renderFunctions[primitive](ctx, entity);
+      } else {
+        console.log(`${primitive} primitive does not implement a render function`);
+      }
+    });
+  }
+
+  renderRect(ctx, entity) {
+    const position = entity.getComponent(_components.PositionComponent);
+    const size = entity.getComponent(_components.SizeComponent);
+    ctx.beginPath();
+    ctx.rect(position.value.x, position.value.y, size.value.x, size.value.y);
+    ctx.fillStyle = "white";
+    ctx.fill();
+  }
+
+  renderCircle(ctx, entity) {
+    const position = entity.getComponent(_components.PositionComponent);
+    const radius = entity.getComponent(_components.RadiusComponent);
+    ctx.beginPath();
+    ctx.arc(position.value.x + radius.value, position.value.y + radius.value, radius.value, 0, 2 * Math.PI, false);
+    ctx.fillStyle = "white";
+    ctx.fill();
+  }
+
 }
-},{"../components":"bc610deadc54a08eda6642f8b91e1a0d","../types/Vector2Type":"0d144aba2d0394558ce3f8bf75078649"}],"ce3d652b0ecb12a1c3093751d3d327a7":[function(require,module,exports) {
-"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
+exports.RendererSystem = RendererSystem;
+
+_defineProperty(RendererSystem, "queries", {
+  canvas: {
+    components: [_components.CanvasContextComponent]
+  },
+  renderables: {
+    components: [_components.RenderComponent]
+  }
 });
-exports.createPaddle = createPaddle;
-
-var _components = require("../components");
-
-function createPaddle(world, playerIndex, position, direction, velocity, size) {
-  return world.createEntity().addComponent(_components.PaddleComponent, {
-    playerIndex
-  }).addComponent(_components.RenderComponent, {
-    primitive: "rect"
-  }).addComponent(_components.MovementComponent, {
-    direction,
-    velocity
-  }).addComponent(_components.PositionComponent, {
-    value: position
-  }).addComponent(_components.SizeComponent, {
-    value: size
-  }).addComponent(_components.CollidableComponent, {
-    box: size
-  });
-}
-},{"../components":"bc610deadc54a08eda6642f8b91e1a0d"}]},{},["41671e6ffbb618e7e29ef6b38e78fb96","7843b3960e086726267ff606847fc92b"], null)
+},{"ecsy":"322d3b240f66735bb9b56aa9d97788a0","../components":"bc610deadc54a08eda6642f8b91e1a0d"}]},{},["41671e6ffbb618e7e29ef6b38e78fb96","7843b3960e086726267ff606847fc92b"], null)
 
 //# sourceMappingURL=pong-ecsy.0efdb850.js.map
