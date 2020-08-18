@@ -18,9 +18,7 @@ This project uses Parcel for bundling. Clone this repository, open the folder on
 
 ## Building
 
-To build the project, run the `build` npm script using the command `npm run build`.
-
-**Note**: currently the build has a bug in which the assets paths on `index.html` are prefixed with a trailing `/` - so if you host the project anywhere else that not a root directory (for example: a Github Pages website 🙄), you'll need to remove those slashes yourself. Fixes are welcome!
+To build the project, run the `build` npm script using the command `npm run build`. The build will be found on the dist directory. Simple as that! ✨
 
 ## Contact the author
 
