@@ -16,12 +16,12 @@ export class PongScene implements IScene {
       new Vector2(canvas.width / 2, canvas.height / 2),
       Random.getRandomDirection(),
       10,
-      2
+      3
     );
 
     // Instantiate paddles
     const paddleSize = new Vector2(20, 120);
-    const paddleSpeed = 5;
+    const paddleSpeed = 6;
     const paddleOffset = 10;
 
     // Player 1

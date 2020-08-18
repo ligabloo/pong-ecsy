@@ -40,7 +40,7 @@ export class BallSystem extends System {
 
       if (wallCollision.y !== 0) {
         movement.direction.y = -movement.direction.y;
-        movement.velocity += 0.1;
+        movement.velocity += 0.2;
         position.value.y =
           position.value.y + (radius.value / 2) * movement.direction.y;
       }
@@ -62,7 +62,8 @@ export class BallSystem extends System {
 
       if (collidingEntities.length) {
         movement.direction.x = -movement.direction.x;
-        position.value.x + radius.value * movement.direction.x;
+        position.value.x =
+          position.value.x + radius.value * movement.direction.x;
       }
     });
   }
