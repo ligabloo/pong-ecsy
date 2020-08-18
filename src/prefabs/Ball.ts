@@ -7,7 +7,7 @@ import {
   RadiusComponent,
 } from "../components";
 import { World } from "ecsy";
-import { Vector2 } from "../types/Vector2Type";
+import { Vector2 } from "../types";
 
 export function createBall(
   world: World,
@@ -18,7 +18,10 @@ export function createBall(
 ) {
   return world
     .createEntity()
-    .addComponent(BallComponent)
+    .addComponent(BallComponent, {
+      initialPosition: position,
+      initialVelocity: velocity,
+    })
     .addComponent(RenderComponent, {
       primitive: "circle",
     })

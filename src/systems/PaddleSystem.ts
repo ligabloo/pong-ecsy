@@ -1,11 +1,12 @@
 import { System } from "ecsy";
 import {
-  PositionComponent,
   CollidableComponent,
   MovementComponent,
   PaddleComponent,
   GameStateComponent,
 } from "../components";
+
+import { PlayerSchemeKeys } from "../types/enums";
 
 export class PaddleSystem extends System {
   static queries = {
@@ -15,12 +16,12 @@ export class PaddleSystem extends System {
 
   playersControlSchemes = {
     0: {
-      up: 87,
-      down: 83,
+      up: PlayerSchemeKeys.W,
+      down: PlayerSchemeKeys.S,
     },
     1: {
-      up: 38,
-      down: 40,
+      up: PlayerSchemeKeys.ArrowUp,
+      down: PlayerSchemeKeys.ArrowDown,
     },
   };
 

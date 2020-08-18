@@ -1,4 +1,4 @@
-import { Vector2 } from "../types/Vector2Type";
+import { Vector2 } from "../types";
 
 interface IBoxStruct {
   position: Vector2;

@@ -9,12 +9,6 @@ export class Vector2 {
     this.y = y;
   }
 
-  set(x: number, y: number) {
-    this.x = x;
-    this.y = y;
-    return this;
-  }
-
   copy(source: Vector2) {
     this.x = source.x;
     this.y = source.y;
@@ -22,7 +16,7 @@ export class Vector2 {
   }
 
   clone() {
-    return new Vector2().set(this.x, this.y);
+    return new Vector2(this.x, this.y);
   }
 }
 

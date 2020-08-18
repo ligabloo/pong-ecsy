@@ -1,6 +1,6 @@
 import { IScene } from "./IScene";
 import { createBall, createPaddle } from "../prefabs";
-import { Vector2 } from "../types/Vector2Type";
+import { Vector2 } from "../types";
 import { Random } from "../utils";
 import { Entity, World } from "ecsy";
 
@@ -31,8 +31,7 @@ export class PongScene implements IScene {
       new Vector2(paddleOffset, canvas.height / 2 - paddleSize.y / 2),
       new Vector2(),
       paddleSpeed,
-      paddleSize,
-      paddleOffset
+      paddleSize
     );
 
     // Player 2
@@ -45,8 +44,7 @@ export class PongScene implements IScene {
       ),
       new Vector2(),
       paddleSpeed,
-      paddleSize,
-      paddleOffset
+      paddleSize
     );
   }
   unload(): void {

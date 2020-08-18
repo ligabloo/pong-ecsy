@@ -1,4 +1,4 @@
-import { Vector2 } from "../types/Vector2Type";
+import { Vector2 } from "../types";
 
 export class VectorMath {
   static add(a: Vector2, b: Vector2): Vector2 {

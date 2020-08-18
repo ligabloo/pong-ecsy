@@ -1,5 +1,5 @@
 import { Component } from "ecsy";
-import { Vector2Type, Vector2 } from "../types/Vector2Type";
+import { Vector2Type, Vector2 } from "../types";
 
 interface IPropTypes {
   value: Vector2;

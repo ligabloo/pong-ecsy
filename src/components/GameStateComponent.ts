@@ -1,18 +1,24 @@
 import { Component, Types } from "ecsy";
+import { GameState } from "../types/enums";
+import { Player, PlayerType } from "../types";
 
 interface IPropTypes {
-  player1Points: number;
-  player2Points: number;
+  state: GameState;
+  player1: Player;
+  player2: Player;
   pressedKeyCodes: number[];
 }
 
 export class GameStateComponent extends Component<IPropTypes> {
   static schema = {
-    player1Points: { type: Types.Number },
-    player2Points: { type: Types.Number },
+    state: { type: Types.Number, default: GameState.Waiting },
+    player1: { type: PlayerType },
+    player2: { type: PlayerType },
     pressedKeyCodes: { type: Types.Array },
   };
-  player1Points: number;
-  player2Points: number;
+
+  state: GameState;
+  player1: Player;
+  player2: Player;
   pressedKeyCodes: number[];
 }

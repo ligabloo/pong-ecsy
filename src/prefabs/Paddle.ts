@@ -7,7 +7,7 @@ import {
   RenderComponent,
   SizeComponent,
 } from "../components";
-import { Vector2 } from "../types/Vector2Type";
+import { Vector2 } from "../types";
 
 export function createPaddle(
   world: World,

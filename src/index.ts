@@ -18,7 +18,9 @@ import {
   MovementSystem,
   PaddleSystem,
   RendererSystem,
+  GameSystem,
 } from "./systems";
+import { Player } from "./types";
 
 // Instantiate ECSY world
 export const world = new World();
@@ -35,6 +37,7 @@ world
   .registerComponent(RadiusComponent)
   .registerComponent(RenderComponent)
   .registerComponent(SizeComponent)
+  .registerSystem(GameSystem)
   .registerSystem(CollisionSystem)
   .registerSystem(RendererSystem)
   .registerSystem(BallSystem)
