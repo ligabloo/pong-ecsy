@@ -4,7 +4,7 @@ import {
   MovementComponent,
   RenderComponent,
   PositionComponent,
-  RadiusComponent,
+  SizeComponent,
 } from "../components";
 import { World } from "ecsy";
 import { Vector2 } from "../types";
@@ -32,8 +32,6 @@ export function createBall(
     .addComponent(PositionComponent, {
       value: position,
     })
-    .addComponent(RadiusComponent, { value: radius })
-    .addComponent(CollisionBoxComponent, {
-      box: new Vector2(radius * 2, radius * 2),
-    });
+    .addComponent(SizeComponent, { value: new Vector2(radius * 2, radius * 2) })
+    .addComponent(CollisionBoxComponent);
 }

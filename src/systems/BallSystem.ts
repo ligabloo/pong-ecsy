@@ -4,8 +4,8 @@ import {
   CollisionBoxComponent,
   MovementComponent,
   BallComponent,
-  RadiusComponent,
   GameStateComponent,
+  SizeComponent,
 } from "../components";
 import { Random } from "../utils";
 import { Vector2 } from "../types";
@@ -30,7 +30,7 @@ export class BallSystem extends System {
       const { wallCollision, collidingEntities } = entity.getComponent<
         CollisionBoxComponent
       >(CollisionBoxComponent);
-      const radius = entity.getComponent<RadiusComponent>(RadiusComponent);
+      const size = entity.getComponent<SizeComponent>(SizeComponent);
       const position = entity.getMutableComponent<PositionComponent>(
         PositionComponent
       );
@@ -38,19 +38,36 @@ export class BallSystem extends System {
         MovementComponent
       );
 
+      if (collidingEntities.length) {
+        // Since we know there will only one colliding paddle at a time,
+        // we can simply grab the first element
+        const paddle = collidingEntities[0];
+
+        const paddlePosition = paddle.getComponent<PositionComponent>(
+          PositionComponent
+        );
+
+        const paddleSize = paddle.getComponent<SizeComponent>(SizeComponent);
+
+        movement.direction.x = -movement.direction.x;
+
+        position.value.x =
+          paddlePosition.value.x + paddleSize.value.x * movement.direction.x;
+      }
+
       if (wallCollision.y !== 0) {
         movement.direction.y = -movement.direction.y;
         movement.velocity += 0.2;
         position.value.y =
-          position.value.y + (radius.value / 2) * movement.direction.y;
+          position.value.y + (size.value.x / 2) * movement.direction.y;
       }
 
       if (wallCollision.x !== 0) {
         const { initialPosition, initialVelocity } = entity.getComponent<
           BallComponent
         >(BallComponent);
-        position.value = initialPosition;
         movement.velocity = initialVelocity;
+        position.value = initialPosition;
         movement.direction = new Vector2(
           movement.direction.x,
           Random.getMinusOrPlusOne()
@@ -58,12 +75,6 @@ export class BallSystem extends System {
 
         gameState[wallCollision.x == 1 ? "player1" : "player2"].score++;
         gameState.state = GameState.Waiting;
-      }
-
-      if (collidingEntities.length) {
-        movement.direction.x = -movement.direction.x;
-        position.value.x =
-          position.value.x + (radius.value / 2) * movement.direction.x;
       }
     });
   }

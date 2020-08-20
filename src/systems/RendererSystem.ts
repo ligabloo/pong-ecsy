@@ -3,7 +3,6 @@ import {
   RenderComponent,
   SizeComponent,
   CanvasContextComponent,
-  RadiusComponent,
   PositionComponent,
 } from "../components";
 
@@ -42,6 +41,10 @@ export class RendererSystem extends System {
       const { primitive, isEnabled } = entity.getComponent<RenderComponent>(
         RenderComponent
       );
+      const position = entity.getComponent<PositionComponent>(
+        PositionComponent
+      );
+      const size = entity.getComponent<SizeComponent>(SizeComponent);
 
       // If not enabled, skip render
       if (!isEnabled) return;
@@ -52,7 +55,7 @@ export class RendererSystem extends System {
       };
 
       if (renderFunctions[primitive]) {
-        renderFunctions[primitive](ctx, entity);
+        renderFunctions[primitive](ctx, position, size);
       } else {
         console.log(
           `${primitive} primitive does not implement a render function`
@@ -61,24 +64,27 @@ export class RendererSystem extends System {
     });
   }
 
-  renderRect(ctx: CanvasRenderingContext2D, entity: Entity): void {
-    const position = entity.getComponent<PositionComponent>(PositionComponent);
-    const size = entity.getComponent<SizeComponent>(SizeComponent);
-
+  renderRect(
+    ctx: CanvasRenderingContext2D,
+    position: PositionComponent,
+    size: SizeComponent
+  ): void {
     ctx.beginPath();
     ctx.rect(position.value.x, position.value.y, size.value.x, size.value.y);
     ctx.fillStyle = "white";
     ctx.fill();
   }
 
-  renderCircle(ctx: CanvasRenderingContext2D, entity: Entity): void {
-    const position = entity.getComponent<PositionComponent>(PositionComponent);
-    const radius = entity.getComponent<RadiusComponent>(RadiusComponent);
+  renderCircle(
+    ctx: CanvasRenderingContext2D,
+    position: PositionComponent,
+    size: SizeComponent
+  ): void {
     ctx.beginPath();
     ctx.arc(
-      position.value.x + radius.value,
-      position.value.y + radius.value,
-      radius.value,
+      position.value.x + size.value.x / 2,
+      position.value.y + size.value.y / 2,
+      size.value.x / 2,
       0,
       2 * Math.PI,
       false

@@ -7,7 +7,6 @@ import {
   MovementComponent,
   PaddleComponent,
   PositionComponent,
-  RadiusComponent,
   RenderComponent,
   SizeComponent,
 } from "./components";
@@ -34,15 +33,14 @@ world
   .registerComponent(MovementComponent)
   .registerComponent(PositionComponent)
   .registerComponent(PaddleComponent)
-  .registerComponent(RadiusComponent)
   .registerComponent(RenderComponent)
   .registerComponent(SizeComponent)
   .registerSystem(GameSystem)
+  .registerSystem(MovementSystem)
   .registerSystem(CollisionSystem)
-  .registerSystem(RendererSystem)
-  .registerSystem(BallSystem)
   .registerSystem(PaddleSystem)
-  .registerSystem(MovementSystem);
+  .registerSystem(BallSystem)
+  .registerSystem(RendererSystem);
 
 // Initialize our GameState singleton
 const gameStateEntity = world.createEntity().addComponent(GameStateComponent);

@@ -3,13 +3,14 @@ import {
   CanvasContextComponent,
   PositionComponent,
   CollisionBoxComponent,
+  SizeComponent,
 } from "../components";
 import { BoxCollision, VectorMath } from "../utils";
 
 export class CollisionSystem extends System {
   static queries = {
     canvas: { components: [CanvasContextComponent] },
-    collidables: { components: [CollisionBoxComponent] },
+    collidables: { components: [CollisionBoxComponent, SizeComponent] },
   };
 
   execute(): void {
@@ -30,11 +31,13 @@ export class CollisionSystem extends System {
         PositionComponent
       );
 
+      const size = entity.getComponent<SizeComponent>(SizeComponent);
+
       // Clear collisions from past frame
       collider.collidingEntities = [];
 
       // Check collision against stage Y
-      if (position.value.y > canvas.height - collider.box.y) {
+      if (position.value.y > canvas.height - size.value.y) {
         collider.wallCollision.y = 1;
       } else if (position.value.y < 0) {
         collider.wallCollision.y = -1;
@@ -43,7 +46,7 @@ export class CollisionSystem extends System {
       }
 
       // Check collision against stage X
-      if (position.value.x > canvas.width - collider.box.x) {
+      if (position.value.x > canvas.width - size.value.x) {
         collider.wallCollision.x = 1;
       } else if (position.value.x < 0) {
         collider.wallCollision.x = -1;
@@ -55,17 +58,18 @@ export class CollisionSystem extends System {
       collidables
         .filter((b) => b.id != entity.id)
         .forEach((b) => {
-          const bCollision = b.getComponent<CollisionBoxComponent>(
-            CollisionBoxComponent
-          );
-          const bPosition = b.getComponent<PositionComponent>(
+          const collidingSize = b.getComponent<SizeComponent>(SizeComponent);
+          const collidingPosition = b.getComponent<PositionComponent>(
             PositionComponent
           );
 
           if (
             BoxCollision.isColliding(
-              { dimensions: collider.box, position: position.value },
-              { dimensions: bCollision.box, position: bPosition.value }
+              { dimensions: size.value, position: position.value },
+              {
+                dimensions: collidingSize.value,
+                position: collidingPosition.value,
+              }
             )
           ) {
             collider.collidingEntities.push(b);

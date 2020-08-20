@@ -31,5 +31,5 @@ export function createPaddle(
       value: position,
     })
     .addComponent(SizeComponent, { value: size })
-    .addComponent(CollisionBoxComponent, { box: size });
+    .addComponent(CollisionBoxComponent);
 }

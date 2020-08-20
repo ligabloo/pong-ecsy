@@ -5,6 +5,5 @@ export * from "./GameStateComponent";
 export * from "./MovementComponent";
 export * from "./PaddleComponent";
 export * from "./PositionComponent";
-export * from "./RadiusComponent";
 export * from "./RenderComponent";
 export * from "./SizeComponent";
