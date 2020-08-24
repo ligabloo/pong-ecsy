@@ -1,14 +1,28 @@
 {
   "name": "pong-ecsy",
+  "description": "A Pong implementation utilizing ECSY.",
+  "main": "dist/index.html",
   "scripts": {
-    "start": "parcel serve ./src/index.html --dist-dir serve",
-    "build": "parcel build ./src/index.html --public-url ./"
+    "start": "parcel serve ./src/index.html --dist-dir .serve",
+    "build": "parcel build ./src/index.html --public-url ./",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
-    "ecsy": "^0.4.0"
+    "ecsy": "^0.4.1"
   },
   "devDependencies": {
     "parcel": "^2.0.0-beta.1",
-    "typescript": "^3.9.7"
-  }
+    "typescript": "^3.9.7",
+    "gh-pages": "^3.1.0"
+  },
+  "keywords": [
+    "ecsy",
+    "parceljs",
+    "parcel",
+    "typescript",
+    "javascript",
+    "pong",
+    "canvas"
+  ],
+  "author": "Matheus Ligabue da Silva <matheus.s.ligabue@gmail.com> (https://github.com/ligabloo)"
 }
