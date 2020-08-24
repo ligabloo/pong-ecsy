@@ -20,6 +20,7 @@ import {
   GameSystem,
 } from "./systems";
 import { Player } from "./types";
+import { PlayerSchemeKeys } from "./types/enums";
 
 // Instantiate ECSY world
 export const world = new World();
@@ -67,6 +68,13 @@ pongScene.load(world, canvas);
 window.addEventListener(
   "keydown",
   (e) => {
+    // quick fix to prevent page scrolling with arrow keys
+    if (
+      [PlayerSchemeKeys.ArrowDown, PlayerSchemeKeys.ArrowUp].includes(e.keyCode)
+    ) {
+      e.preventDefault();
+    }
+
     gameState.pressedKeyCodes = [...gameState.pressedKeyCodes, e.keyCode];
   },
   false

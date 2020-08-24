@@ -33,7 +33,6 @@ export class GameSystem extends System {
     const stateSystems = {
       [GameState.Waiting]: this.waitingState,
       [GameState.Running]: this.runningState,
-      [GameState.Paused]: this.pausedState,
     };
 
     stateSystems[gameState.state](gameState);
@@ -61,6 +60,4 @@ export class GameSystem extends System {
   }
 
   runningState(gameState: GameStateComponent) {}
-
-  pausedState(gameState: GameStateComponent) {}
 }
